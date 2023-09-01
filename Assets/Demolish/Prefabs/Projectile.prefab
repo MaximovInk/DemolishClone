@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1149924511035982473}
   - component: {fileID: 6575366154775959916}
   - component: {fileID: 3895162908983721605}
-  - component: {fileID: 5958922692277674008}
   - component: {fileID: 5331459128149709148}
   m_Layer: 0
   m_Name: Projectile
@@ -107,18 +106,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5958922692277674008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5406468377936571850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e843d84b82a16a49b58d0f9dd77748b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &5331459128149709148
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -141,7 +128,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
