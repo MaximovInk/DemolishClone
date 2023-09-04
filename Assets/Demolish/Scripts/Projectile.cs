@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace MaximovInk
 {
@@ -16,8 +17,8 @@ namespace MaximovInk
         {
             if (other.gameObject.CompareTag("BuildingDestructed"))
             {
-                var rb = other.gameObject.GetComponent<Rigidbody>();
-                ApplyExplosionForce(rb, destroyedForceMultiplier);
+                var part = other.gameObject.GetComponent<BuildingPart>();
+                part.AddExplosion(explosionForce, GetExplosionRadius());
             }
 
             if (!other.gameObject.CompareTag("Building")) return;
@@ -53,21 +54,9 @@ namespace MaximovInk
 
         private void StructureDestroy(GameObject other)
         {
-            other.layer = LayerMask.NameToLayer("BuildingDestructed");
-            other.tag = "BuildingDestructed";
-            var rb = other.AddComponent<Rigidbody>();
-            ApplyExplosionForce(rb);
-        }
-
-        private void ApplyExplosionForce(Rigidbody rigidbody, float forceMultiplier = 1f)
-        {
-            rigidbody.AddExplosionForce(
-                explosionForce,
-                transform.position,
-                GetExplosionRadius(),
-                0f,
-                ForceMode.Impulse
-                );
+            var part = other.GetComponent<BuildingPart>();
+            part.DestroyBuildingPart();
+            part.AddExplosion(explosionForce, GetExplosionRadius());
         }
     }
 
