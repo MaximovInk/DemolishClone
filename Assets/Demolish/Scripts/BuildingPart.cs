@@ -12,6 +12,10 @@ namespace MaximovInk
 
         public event Action<int> OnDestroyThis;
 
+        private bool isDestroyed = false;
+
+        public bool IsDestroyed() => isDestroyed;
+
         public void SetLayerIndex(int layerIndex)
         {
             this.layerIndex = layerIndex;
@@ -29,6 +33,8 @@ namespace MaximovInk
 
             if(invokeAction)
                 OnDestroyThis?.Invoke(layerIndex);
+
+            isDestroyed = true;
         }
 
         public void AddExplosion(float force, float radius)
