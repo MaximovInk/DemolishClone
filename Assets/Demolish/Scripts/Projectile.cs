@@ -17,8 +17,6 @@ namespace MaximovInk
 
         private void OnCollisionEnter(Collision other)
         {
-            return;
-
             var obj = other.transform.GetComponent<FracturedChunk>();
 
             if(obj != null){
@@ -26,10 +24,10 @@ namespace MaximovInk
                 if (obj.IsDetachedChunk)
                     return;
 
-                obj.FracturedObjectSource.Explode(transform.position, explosionForce, radius,false,false,false,false);
+                obj.FracturedObjectSource.Explode(transform.position, explosionForce, radius,false,false,false,true);
 
                 var chunks =obj.FracturedObjectSource.ListFracturedChunks;
-                Debug.Log(chunks.Count);
+
                 for (int i = 0; i < chunks.Count; i++)
                 {
                     if (chunks[i].IsDetachedChunk)
@@ -37,7 +35,6 @@ namespace MaximovInk
                         chunks[i].gameObject.layer = LayerMask.NameToLayer("BuildingDestructed");
                     }
                 }
-                Debug.Log("Explode");
             }
         }
 
