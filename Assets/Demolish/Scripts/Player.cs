@@ -10,6 +10,8 @@ namespace MaximovInk
         [SerializeField] private Transform gun;
         [SerializeField] private float rotationSpeed = 10f;
 
+        [SerializeField] private Vector3 lookOffset;
+
         private Camera _camera;
 
         private void Awake()
@@ -30,7 +32,7 @@ namespace MaximovInk
         private void RotateGun(Vector3 lookAt)
         {
             var originalRot = gun.rotation;
-            gun.LookAt(lookAt, Vector3.up);
+            gun.LookAt(lookAt+ lookOffset, Vector3.up);
 
             var newRot = gun.rotation;
             var angles = newRot.eulerAngles;
