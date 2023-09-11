@@ -1,51 +1,81 @@
-﻿using System;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Rendering;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MaximovInk
 {
     public class Projectile : MonoBehaviour
     {
-        [SerializeField] private float radius = 1.74f;
-        [SerializeField] private float explosionForce = 1f;
+        private Rigidbody _rigidbody;
 
-        private void Start()
+        private AmmoData _initData;
+
+        private void Awake()
         {
-            GetComponent<Rigidbody>().solverIterations = 255;
+            Init();
         }
 
-        private void OnCollisionEnter(Collision other)
+        public void SetVelocity(Vector3 velocity)
         {
-            var obj = other.transform.GetComponent<FracturedChunk>();
+            if (_rigidbody == null) Init();
 
-            if(obj != null){
+            _rigidbody.velocity = velocity * _initData.ForceMultiplier;
+        }
 
-                if (obj.IsDetachedChunk)
-                    return;
+        private void Init()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+        }
 
-                obj.FracturedObjectSource.Explode(transform.position, explosionForce, radius,false,false,false,true);
+        public void SetupProjectile(AmmoData data)
+        {
+            transform.localScale = data.Scale;
+            _initData = data;
+        }
 
-                var chunks =obj.FracturedObjectSource.ListFracturedChunks;
+        //Optimize
+        private void UpdateChunksLayer(FracturedObject fracturedObject)
+        {
+            var chunks = fracturedObject.ListFracturedChunks;
 
-                for (int i = 0; i < chunks.Count; i++)
+            for (int i = 0; i < chunks.Count; i++)
+            {
+                if (chunks[i].IsDetachedChunk)
                 {
-                    if (chunks[i].IsDetachedChunk)
-                    {
-                        chunks[i].gameObject.layer = LayerMask.NameToLayer("BuildingDestructed");
-                    }
+                    chunks[i].gameObject.layer = LayerMask.NameToLayer("BuildingDestructed");
                 }
             }
         }
 
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!other.transform.TryGetComponent<FracturedChunk>(out var obj)) return;
+
+            if (obj.IsDetachedChunk)
+                return;
+
+            if (_initData.IsExplode)
+            {
+                obj.FracturedObjectSource.Explode(
+                    transform.position, 
+                    _initData.ExplodeForce,
+                    _initData.ExplodeRadius,
+                    false,
+                    false,
+                    false,
+                    true
+                );
+            }
+
+            UpdateChunksLayer(obj.FracturedObjectSource);
+        }
+
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.green;
+            if (!_initData.IsExplode) return;
+
             var position = transform.position;
 
-            Gizmos.DrawWireSphere(position, radius);
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(position, radius);
+            Gizmos.DrawWireSphere(position, _initData.ExplodeRadius);
 
         }
 

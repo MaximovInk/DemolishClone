@@ -7,14 +7,9 @@ namespace MaximovInk
     {
         [SerializeField] private TextMeshProUGUI buildingConditionText;
 
-        public void SetBuildingCondition(BuildingState state)
+        public void SetBuildingCondition(float state)
         {
-            buildingConditionText.text = $"Building Condition: {(int)(state.total * 100)}\n";
-
-            foreach (var layerState in state.layers)
-            {
-                buildingConditionText.text += $"LayerState: {(int)(layerState * 100)}\n";
-            }
+            buildingConditionText.text = $"Building Condition: {(int)(state * 100)}\n";
         }
 
     }
