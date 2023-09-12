@@ -66,6 +66,8 @@ namespace MaximovInk
             }
 
             UpdateChunksLayer(obj.FracturedObjectSource);
+
+            LevelManager.Instance.UpdateBuildingState();
         }
 
         private void OnDrawGizmos()
