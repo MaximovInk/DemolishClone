@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MaximovInk;
 using UltimateFracturing;
 
 [ExecuteInEditMode, Serializable]
@@ -498,6 +499,9 @@ public class FracturedChunk : MonoBehaviour
                 DieTimer dieTimer = gameObject.AddComponent<DieTimer>();
                 dieTimer.SecondsToDie = UnityEngine.Random.Range(FracturedObjectSource.EventDetachedMinLifeTime, FracturedObjectSource.EventDetachedMaxLifeTime);
             }
+
+            transform.SetParent(BuildingManager.Instance.transform);
+            LevelManager.Instance.UpdateBuildingState();
         }
     }
 
@@ -570,11 +574,11 @@ public class FracturedChunk : MonoBehaviour
         }
     }
 
-    public static FracturedChunk ChunkRaycast(Vector3 v3Pos, Vector3 v3Forward, out RaycastHit hitInfo)
+    public static FracturedChunk ChunkRaycast(Vector3 v3Pos, Vector3 v3Forward, out RaycastHit hitInfo, float distance = Mathf.Infinity)
     {
         FracturedChunk chunk = null;
 
-        if(Physics.Raycast(v3Pos, v3Forward, out hitInfo))
+        if(Physics.Raycast(v3Pos, v3Forward, out hitInfo, distance))
         {
             // Intersection found, try to check if it has a FracturedChunk component
 

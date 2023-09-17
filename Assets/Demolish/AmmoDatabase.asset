@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c809bd47960f19c429fc3dbae34cee77, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ee7934829d0d7e4a9ab5abf2e6b86cc, type: 3}
   m_Name: AmmoDatabase
   m_EditorClassIdentifier: 
   AmmoTypes:
@@ -19,7 +19,7 @@ MonoBehaviour:
     ExplodeForce: 0
     ExplodeRadius: 0
     Scale: {x: 1, y: 1, z: 1}
-    Prefab: {fileID: -2224251637367473920, guid: 1a38676f2a58d4b49803190dca9b502b,
+    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
   - NameID: fireAmmo
     ForceMultiplier: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
     ExplodeForce: 1
     ExplodeRadius: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: -2224251637367473920, guid: 1a38676f2a58d4b49803190dca9b502b,
+    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
   - NameID: bombAmmo
     ForceMultiplier: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     ExplodeForce: 2
     ExplodeRadius: 2
     Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: -2224251637367473920, guid: 1a38676f2a58d4b49803190dca9b502b,
+    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
   - NameID: rocketAmmo
     ForceMultiplier: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     ExplodeForce: 3
     ExplodeRadius: 3
     Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: -2224251637367473920, guid: 1a38676f2a58d4b49803190dca9b502b,
+    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
   - NameID: nuclearBombAmmo
     ForceMultiplier: 1
@@ -51,5 +51,5 @@ MonoBehaviour:
     ExplodeForce: 10
     ExplodeRadius: 10
     Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: -2224251637367473920, guid: 1a38676f2a58d4b49803190dca9b502b,
+    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
