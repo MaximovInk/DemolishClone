@@ -45,20 +45,35 @@ namespace MaximovInk
 
         private bool _isDestroyed = false;
 
-        private void Update()
+
+        public void ResetDestroyed()
         {
-            if (_isDestroyed) return;
+            _isDestroyed = false;
+        }
+
+        private void Update  ()
+        {
+            //if (_isDestroyed) return;
 
             var chunkRaycast = FracturedChunk.ChunkRaycast(
                 transform.position,
                 _rigidbody.velocity.normalized,
                 out var hitInfo,
-                CannonManager.Instance.GetRaycastLength());
+                 CannonManager.Instance.GetRaycastLength());
+
+
+            Debug.DrawRay(transform.position, _rigidbody.velocity.normalized * CannonManager.Instance.GetRaycastLength());
 
             if (!chunkRaycast) return;
 
-            chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+            if(_initData.IsExplode) 
+                chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
             _isDestroyed = true; 
+            OnImpact();
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
             OnImpact();
         }
 

@@ -47,6 +47,7 @@ namespace MaximovInk
         private static void OnReturnedToPool(Projectile projectile)
         {
             projectile.gameObject.SetActive(false);
+            projectile.ResetDestroyed();
         }
 
 

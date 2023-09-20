@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 [CustomEditor(typeof(FracturedObject))]
 public class FracturedObjectEditor : Editor
@@ -317,6 +318,9 @@ public class FracturedObjectEditor : Editor
 	
     public override void OnInspectorGUI()
     {
+
+
+        
         int nIndentationJump = 2;
         Vector4 v4GUIColor = GUI.contentColor;
 
@@ -325,6 +329,7 @@ public class FracturedObjectEditor : Editor
         serializedObject.Update();
 
         FracturedObject fracturedComponent = serializedObject.targetObject as FracturedObject;
+
 
         // Show the custom GUI controls
 
@@ -338,6 +343,59 @@ public class FracturedObjectEditor : Editor
         bool bRecomputePlanes        = false;
         bool bSaveMeshAssets         = false;
 
+
+        EditorGUILayout.Space();
+        GUILayout.Label("==Demolish==");
+
+
+        if (GUILayout.Button("Set default parameters"))
+        {
+            fracturedComponent.ChunkConnectionStrength = 0.624f;
+            fracturedComponent.FracturePattern = FracturedObject.EFracturePattern.BSP;
+            fracturedComponent.GenerateIslands = true;
+            fracturedComponent.GenerateNumChunks = 300;
+            fracturedComponent.ChunkHorizontalRadiusSupportStrength = 1.65f;
+            fracturedComponent.SplitsWorldSpace = true;
+            fracturedComponent.SplitRegularly = true;
+            fracturedComponent.SplitSizeVariation = 0.48f;
+            fracturedComponent.SplitXVariation = 0.6f;
+            fracturedComponent.SplitYVariation = 0.6f;
+            fracturedComponent.SplitZVariation = 0.6f;
+            fracturedComponent.ChunkIslandConnectionMaxDistance = 0.2f;
+            fracturedComponent.SupportChunksAreIndestructible = true;
+            fracturedComponent.TotalMass = 10000;
+        
+            bMarkNonSupportedChunks = true;
+
+            SceneView.RepaintAll();
+        }
+
+        if (GUILayout.Button("Set default support planes"))
+        {
+            fracturedComponent.ListSupportPlanes.Clear();
+
+            bRecomputePlanes = true;
+
+            fracturedComponent.AddSupportPlane();
+            fracturedComponent.ComputeSupportPlaneIntersections();
+            fracturedComponent.MarkNonSupportedChunks();
+
+            if (PropSaveMeshDataToAsset.boolValue && fracturedComponent.MeshAssetDataFile is { Length: > 0 })
+            {
+                if (System.IO.File.Exists(fracturedComponent.MeshAssetDataFile))
+                {
+                    AssetDatabase.AddObjectToAsset(fracturedComponent.ListSupportPlanes[^1].planeMesh, fracturedComponent.MeshAssetDataFile);
+                }
+                else
+                {
+                    AssetDatabase.CreateAsset(fracturedComponent.ListSupportPlanes[^1].planeMesh, fracturedComponent.MeshAssetDataFile);
+                }
+            }
+
+            fracturedComponent.ListSupportPlanes[^1].v3PlanePosition = new Vector3(0, 0.05f, 0);
+        }
+
+
         EditorGUILayout.Space();
         fracturedComponent.GUIExpandMain = EditorGUILayout.Foldout(fracturedComponent.GUIExpandMain, new GUIContent("Main", "Main fracturing parameters"));
 
@@ -350,21 +408,45 @@ public class FracturedObjectEditor : Editor
             PropGenerateChunkConnectionInfo.boolValue           = EditorGUILayout.Toggle     (new GUIContent("Chunk Interconnection",     "Will generate a connection graph between chunks to enable structural behavior."), PropGenerateChunkConnectionInfo.boolValue);
             GUI.enabled = PropGenerateChunkConnectionInfo.boolValue;
             PropStartStatic.boolValue                           = EditorGUILayout.Toggle     (new GUIContent("Start Static",              "If Chunk Interconnection is checked and no support planes or support chunks have been defined, an object would collapse on start. Check this if you want the object to stay static until first contact."), PropStartStatic.boolValue);
+            
             PropChunkConnectionMinArea.floatValue               = EditorGUILayout.FloatField (new GUIContent("Interconnection Min Area",  "Minimum area between 2 connected chunks to consider them connected. Setting it to zero won't consider all chunks connected, only those that share at least a common face area no matter how small."), PropChunkConnectionMinArea.floatValue);
+
+            /*
+              GUILayout.Label("0 - от снаряда рушиться все здание");
+            GUILayout.Label("1 - урон практически без эффекта");
+            
+            GUILayout.Label("Связанность чанков по горизонтали");
+            GUILayout.Label("Желательно не допускать 'красных' чанков - они рушаться при спавне");
+             */
+            GUI.contentColor = Color.green;
             PropChunkConnectionStrength.floatValue              = EditorGUILayout.Slider     (new GUIContent("Interconnection Strength",  "When a chunk attached to the object is hit and detached, this controls how many connected chunks will detach too. 0.0 will make the whole object collapse, 1.0 won't detach any connected chunks."), PropChunkConnectionStrength.floatValue, 0.0f, 1.0f);
+            GUI.contentColor = v4GUIColor;
+
             EditorGUI.BeginChangeCheck();
+
+            GUI.contentColor = Color.green;
             PropChunkHorizontalRadiusSupportStrength.floatValue = EditorGUILayout.FloatField (new GUIContent("Support Hor. Strength",     "Controls the maximum horizontal distance a chunk must be from a support chunk to stay attached to the object. If its distance is greater than this value, it will fall."), PropChunkHorizontalRadiusSupportStrength.floatValue);
-            if(EditorGUI.EndChangeCheck())
+            GUI.contentColor = v4GUIColor;
+
+            if (EditorGUI.EndChangeCheck())
             {
                 bMarkNonSupportedChunks = true;
             }
             PropSupportChunksAreIndestructible.boolValue        = EditorGUILayout.Toggle     (new GUIContent("Support Is Indestructible", "If it is enabled, support chunks can not be destroyed/removed from the object."), PropSupportChunksAreIndestructible.boolValue);
             GUI.enabled = PropGenerateChunkConnectionInfo.boolValue && PropGenerateIslands.boolValue;
+           
+            GUI.contentColor = Color.red;
             PropChunkIslandConnectionMaxDistance.floatValue     = EditorGUILayout.FloatField (new GUIContent("Island Max Connect Dist.",  "When feeding a source object, and Island Generation is active, it may detect multiple closed meshes inside and some of them may be connected to others. This controls how far a face from one island can be from another island to consider the two islands connected."), PropChunkIslandConnectionMaxDistance.floatValue);
+            GUI.contentColor = v4GUIColor;
+            
             GUI.enabled = true;
             EditorGUI.BeginChangeCheck();
+
+            GUI.contentColor = Color.green;
             PropTotalMass.floatValue                            = EditorGUILayout.FloatField (new GUIContent("Total Mass",                "The total mass of the object. Each chunk mass will be computed depending on its size and this value."), PropTotalMass.floatValue);
-            if(EditorGUI.EndChangeCheck())
+            GUI.contentColor = v4GUIColor;
+
+            if (EditorGUI.EndChangeCheck())
             {
                 fracturedComponent.ComputeChunksMass(PropTotalMass.floatValue);
             }
@@ -405,7 +487,10 @@ public class FracturedObjectEditor : Editor
 
             if(PropFracturePattern.enumNames[PropFracturePattern.enumValueIndex] == FracturedObject.EFracturePattern.BSP.ToString())
             {
+                GUI.contentColor = Color.green;
                 PropNumChunks.intValue         = EditorGUILayout.IntField(new GUIContent("Number Of Chunks",     "The number of chunks to fracture the mesh into."), PropNumChunks.intValue);
+                GUI.contentColor = v4GUIColor;
+
                 PropSplitsWorldSpace.boolValue = EditorGUILayout.Toggle  (new GUIContent("Slice In World Space", "Controls if the slicing will be performed in local object space or in world space. Note that the original object orientation is considered, not the fractured object."), PropSplitsWorldSpace.boolValue);
                 PropSplitRegularly.boolValue   = EditorGUILayout.Toggle  (new GUIContent("Slice Regularly",      "If set, slices will always be performed to minimize the chunk size in all its axes, otherwise they will be performed randomly with the probabilities given."), PropSplitRegularly.boolValue);
 
@@ -421,17 +506,23 @@ public class FracturedObjectEditor : Editor
                 if(EditorGUI.EndChangeCheck()) bProbabilityZChanged = true;
                 GUI.enabled = true;
 
+
+                GUI.contentColor = Color.green;
                 PropSplitSizeVariation.floatValue = EditorGUILayout.Slider(new GUIContent("Slice Size Variation", "0.0 will give chunks more equally sized. Increasing values will give chunks varying more in size."), PropSplitSizeVariation.floatValue, 0.0f, 1.0f);
                 PropSplitXVariation.floatValue    = EditorGUILayout.Slider(new GUIContent("Slice X Variation",    "Angular variation for the slices in the X plane."), PropSplitXVariation.floatValue, 0.0f, 1.0f);
                 PropSplitYVariation.floatValue    = EditorGUILayout.Slider(new GUIContent("Slice Y Variation",    "Angular variation for the slices in the Y plane."), PropSplitYVariation.floatValue, 0.0f, 1.0f);
                 PropSplitZVariation.floatValue    = EditorGUILayout.Slider(new GUIContent("Slice Z Variation",    "Angular variation for the slices in the Z plane."), PropSplitZVariation.floatValue, 0.0f, 1.0f);
+                GUI.contentColor = v4GUIColor;
             }
 
             EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
+            GUI.contentColor = Color.green;
             PropSplitMaterial.objectReferenceValue = EditorGUILayout.ObjectField(new GUIContent("Interior Material", "Material applied to the interior faces of the chunks."), PropSplitMaterial.objectReferenceValue, typeof(Material), true);
-            if(EditorGUI.EndChangeCheck())
+            GUI.contentColor = v4GUIColor;
+
+            if (EditorGUI.EndChangeCheck())
             {
                 bReassignSplitMaterial = true;
             }
@@ -501,9 +592,12 @@ public class FracturedObjectEditor : Editor
         }
 
         EditorGUILayout.Space();
-        fracturedComponent.GUIExpandSupportPlanes = EditorGUILayout.Foldout(fracturedComponent.GUIExpandSupportPlanes, new GUIContent("Support Planes", "Support planes control which chunks are tagged as support. Chunks that act as support can't be destroyed and will hold the object together. A chunk needs to be connected to a support chunk (directly or through other chunks) or otherwise it will fall. This prevents chunks from staying static in the air and enables realistic collapsing behavior."));
 
-        if(fracturedComponent.GUIExpandSupportPlanes)
+        GUI.contentColor = Color.green;
+        fracturedComponent.GUIExpandSupportPlanes = EditorGUILayout.Foldout(fracturedComponent.GUIExpandSupportPlanes, new GUIContent("Support Planes", "Support planes control which chunks are tagged as support. Chunks that act as support can't be destroyed and will hold the object together. A chunk needs to be connected to a support chunk (directly or through other chunks) or otherwise it will fall. This prevents chunks from staying static in the air and enables realistic collapsing behavior."));
+        GUI.contentColor = v4GUIColor;
+
+        if (fracturedComponent.GUIExpandSupportPlanes)
         {
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
