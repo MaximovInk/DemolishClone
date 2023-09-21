@@ -351,18 +351,20 @@ public class FracturedObjectEditor : Editor
         if (GUILayout.Button("Set default parameters"))
         {
             fracturedComponent.ChunkConnectionStrength = 0.624f;
-            fracturedComponent.FracturePattern = FracturedObject.EFracturePattern.BSP;
+            fracturedComponent.FracturePattern = FracturedObject.EFracturePattern.Voronoi;
             fracturedComponent.GenerateIslands = true;
             fracturedComponent.GenerateNumChunks = 300;
             fracturedComponent.ChunkHorizontalRadiusSupportStrength = 1.65f;
             fracturedComponent.SplitsWorldSpace = true;
             fracturedComponent.SplitRegularly = true;
-            fracturedComponent.SplitSizeVariation = 0.48f;
-            fracturedComponent.SplitXVariation = 0.6f;
-            fracturedComponent.SplitYVariation = 0.6f;
-            fracturedComponent.SplitZVariation = 0.6f;
+            fracturedComponent.VoronoiCellsXCount = 6;
+            fracturedComponent.VoronoiCellsYCount = 6;
+            fracturedComponent.VoronoiCellsZCount = 6;
+            fracturedComponent.VoronoiCellsZSizeVariation = 0.5f;
+            fracturedComponent.VoronoiCellsYSizeVariation = 0.5f;
+            fracturedComponent.VoronoiCellsXSizeVariation = 0.5f;
             fracturedComponent.ChunkIslandConnectionMaxDistance = 0.2f;
-            fracturedComponent.SupportChunksAreIndestructible = true;
+            fracturedComponent.SupportChunksAreIndestructible = false;
             fracturedComponent.TotalMass = 10000;
         
             bMarkNonSupportedChunks = true;
