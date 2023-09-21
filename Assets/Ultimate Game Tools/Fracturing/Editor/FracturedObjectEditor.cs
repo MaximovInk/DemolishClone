@@ -366,6 +366,8 @@ public class FracturedObjectEditor : Editor
             fracturedComponent.ChunkIslandConnectionMaxDistance = 0.2f;
             fracturedComponent.SupportChunksAreIndestructible = false;
             fracturedComponent.TotalMass = 10000;
+            fracturedComponent.ConcaveColliderAlgorithm = FracturedObject.ECCAlgorithm.Legacy;
+            fracturedComponent.IntegrateWithConcaveCollider = true;
         
             bMarkNonSupportedChunks = true;
 
