@@ -23,7 +23,7 @@ namespace MaximovInk
         {
             var clampedValue = Mathf.Clamp(obj + 0.05f, 0f, 1f);
 
-            _buildingStateSlider.value = clampedValue;
+            _buildingStateSlider.value = 1f-clampedValue;
 
             var intVal = (int)(clampedValue * 100);
 

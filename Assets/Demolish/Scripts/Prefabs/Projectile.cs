@@ -9,9 +9,17 @@ namespace MaximovInk
         private AmmoData _initData;
         private int _releaseIndex = 0;
 
+        public bool IsReleased { get; set; }
+
         private void Awake()
         {
             Init();
+            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+        }
+
+        private void Instance_OnLevelComplete()
+        {
+            ProjectilePool.Instance.ReleaseProjectile(_releaseIndex, this);
         }
 
         public void SetVelocity(Vector3 velocity)

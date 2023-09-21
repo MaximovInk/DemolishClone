@@ -27,11 +27,18 @@ namespace MaximovInk
 
         public Projectile GetProjectile(int index)
         {
-            return _pool[index].Get();
+            var projectile = _pool[index].Get();
+            projectile.IsReleased = false;
+
+            return projectile;
         }
+
 
         public void ReleaseProjectile(int index, Projectile projectile)
         {
+            if (projectile.IsReleased) return;
+
+            projectile.IsReleased = true;
             _pool[index].Release(projectile);
         }
 
@@ -60,5 +67,7 @@ namespace MaximovInk
         {
             Destroy(projectile.gameObject);
         }
+
+
     }
 }
