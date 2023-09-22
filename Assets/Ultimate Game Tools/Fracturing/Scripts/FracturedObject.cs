@@ -145,6 +145,8 @@ public class FracturedObject : MonoBehaviour
     private float[]      m_afFreeChunkSoundTimers;
     private float[]      m_afFreeChunkPrefabTimers;
 
+    public event Action<FracturedChunk> OnChunkDetachEvent;
+
     public Material GizmosMaterial
     {
         get
@@ -615,17 +617,17 @@ public class FracturedObject : MonoBehaviour
 
     public void NotifyChunkDetach(FracturedChunk chunk)
     {
-        if(m_bDetached == false)
+        if (m_bDetached == false)
         {
             // Disable all triggerse in them so that free chunks will collide also with static non-free chunks
 
-            foreach(FracturedChunk chunkInstance in ListFracturedChunks)
+            foreach (FracturedChunk chunkInstance in ListFracturedChunks)
             {
-                if(chunkInstance != null)
+                if (chunkInstance != null)
                 {
                     Collider colliderComponent = chunkInstance.GetComponent<Collider>();
 
-                    if(colliderComponent != null)
+                    if (colliderComponent != null)
                     {
                         colliderComponent.isTrigger = false;
                     }
@@ -636,10 +638,13 @@ public class FracturedObject : MonoBehaviour
         m_bDetached = true;
         SetSingleMeshVisibility(false);
 
-        if(EventDetachedAnyCallMethod.Length > 0 && EventDetachedAnyCallGameObject != null)
+        if (EventDetachedAnyCallMethod.Length > 0 && EventDetachedAnyCallGameObject != null)
         {
             EventDetachedAnyCallGameObject.SendMessage(EventDetachedAnyCallMethod);
+
         }
+
+        OnChunkDetachEvent?.Invoke(chunk);
     }
 
     public void NotifyDetachChunkCollision(FracturedChunk.CollisionInfo collisionInfo)

@@ -144,7 +144,7 @@ public class FracturedChunk : MonoBehaviour
 
         if(other.gameObject)
         {
-            var otherChunk = other.gameObject.GetComponent<FracturedChunk>();
+            var otherChunk = other.gameObject.GetComponentInParent<FracturedChunk>();
 
             if(otherChunk && (other.attachedRigidbody != null))
             {
@@ -174,7 +174,7 @@ public class FracturedChunk : MonoBehaviour
             var bOtherIsFreeChunkFromSameObject = false;
 
             
-            if(other.gameObject.TryGetComponent<FracturedChunk>(out var otherChunk))
+            if(other.transform.parent != null && other.transform.parent.TryGetComponent<FracturedChunk>(out var otherChunk))
             {
                 if(otherChunk.IsDetachedChunk == true && otherChunk.FracturedObjectSource == FracturedObjectSource)
                 {
