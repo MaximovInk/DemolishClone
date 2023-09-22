@@ -87,6 +87,8 @@ namespace MaximovInk
 
         private void OnDrawGizmos()
         {
+            if (_initData == null) return;
+
             if (!_initData.IsExplode) return;
 
             var position = transform.position;
