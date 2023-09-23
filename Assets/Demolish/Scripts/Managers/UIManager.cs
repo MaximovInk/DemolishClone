@@ -5,10 +5,11 @@ namespace MaximovInk
 {
     public class UIManager : MonoBehaviourSingleton<UIManager>
     {
-        private void Awake()
-        {
-            
-        }
+        
+        [SerializeField] private Sprite _weaponButtonSelectSprite;
+        public Sprite WeaponButtonSelectSprite => _weaponButtonSelectSprite;
+        [SerializeField] private Sprite _weaponButtonDeselectSprite;
+        public Sprite WeaponButtonDeselectSprite => _weaponButtonDeselectSprite;
 
     }
 }

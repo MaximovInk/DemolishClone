@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace MaximovInk
@@ -61,8 +62,6 @@ namespace MaximovInk
 
         private void Update  ()
         {
-            //if (_isDestroyed) return;
-
             var chunkRaycast = FracturedChunk.ChunkRaycast(
                 transform.position,
                 _rigidbody.velocity.normalized,
@@ -74,14 +73,23 @@ namespace MaximovInk
 
             if (!chunkRaycast) return;
 
-            if(_initData.IsExplode) 
+            if (_initData.IsExplode)
+            {
                 chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+            }
+
             _isDestroyed = true; 
             OnImpact();
         }
 
         private void OnCollisionEnter(Collision other)
         {
+            var chunk = other.gameObject.GetComponentInParent<FracturedChunk>();
+            if (chunk && _initData.IsExplode)
+            {
+                chunk.Impact(transform.position, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+            }
+
             OnImpact();
         }
 

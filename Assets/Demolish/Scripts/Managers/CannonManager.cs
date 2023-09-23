@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace MaximovInk
@@ -22,6 +24,14 @@ namespace MaximovInk
 
         public float GetProjectileHideDelay() => _hideProjectileDelay;
         public float GetRaycastLength()=> _raycastProjectileLength;
+
+        public event Action<int> OnWeaponShootEvent;
+
+        public int CurrentAmmoIndex
+        {
+            get => _currentAmmoIdx;
+            set => _currentAmmoIdx = value;
+        }
 
         private void Awake()
         {
@@ -59,6 +69,8 @@ namespace MaximovInk
 
             _trajectoryRenderer.CalculatePath(_source.position, _source.forward * _projectileForce, _target);
             _trajectoryRenderer.Draw();
+             
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -74,6 +86,14 @@ namespace MaximovInk
             projectile.transform.position = _source.position;
             projectile.SetupProjectile(currentAmmo);
             projectile.SetVelocity(_source.forward * _projectileForce);
+
+            OnWeaponShootEvent?.Invoke(_currentAmmoIdx);
+
+            if (!WeaponButton.IsCanShoot(_currentAmmoIdx))
+            {
+                _currentAmmoIdx = 0;
+                WeaponButton.Select(0);
+            }
         }
 
     }

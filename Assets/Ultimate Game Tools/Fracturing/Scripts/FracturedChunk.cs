@@ -586,13 +586,13 @@ public class FracturedChunk : MonoBehaviour
         {
             // Intersection found, try to check if it has a FracturedChunk component
 
-            chunk = hitInfo.collider.GetComponent<FracturedChunk>();
+            chunk = hitInfo.collider.GetComponentInParent<FracturedChunk>();
 
             if(chunk == null && hitInfo.collider.transform.parent != null)
             {
                 // Not found, but concave collider creates child nodes, we have to take this into account as well.
                 // In this case the FracturedChunk should be in its parent
-                chunk = hitInfo.collider.transform.parent.GetComponent<FracturedChunk>();
+                chunk = hitInfo.collider.transform.parent.GetComponentInParent<FracturedChunk>();
             }
         }
 
