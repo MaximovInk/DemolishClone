@@ -86,6 +86,7 @@ namespace MaximovInk
         public void AddStars(int value)
         {
             _playerData.Stars += value;
+            Save();
         }
     }
 }

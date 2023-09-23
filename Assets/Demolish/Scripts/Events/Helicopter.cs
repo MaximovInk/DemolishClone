@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
-namespace Assets.Demolish.Scripts.Events
+namespace MaximovInk
 {
-    internal class Helicopter
+    public class Helicopter : MonoBehaviour
     {
+        private void OnCollisionEnter(Collision other)
+        {
+            HelicopterEvent.Instance.HelicopterDamaged();
+        }
     }
 }

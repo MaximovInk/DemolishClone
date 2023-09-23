@@ -19,8 +19,6 @@ namespace MaximovInk
 
         private FracturedObject[] _refObjects;
 
-        //private int _currentIndex = 0;
-
         private int CurrentRefIndex => (Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1,0, int.MaxValue)) % _refObjects.Length;
 
         private const int MAX_EXPLOSIONS = 5;
@@ -63,7 +61,6 @@ namespace MaximovInk
 
             IsCompleted = false;
 
-            Debug.Log(CurrentRefIndex);
             var objRef = _refObjects[CurrentRefIndex];
             _fracturedObject = Instantiate(objRef);
 

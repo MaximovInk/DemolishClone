@@ -8,11 +8,13 @@ namespace MaximovInk
     {
         [SerializeField] private TextMeshProUGUI _buildingStateTextInfo;
         [SerializeField] private Button _resetDataButton;
+        [SerializeField] private Button _startHeliEventButton;
 
         private void Awake()
         {
             LevelManager.Instance.OnStateChangedEvent += Instance_OnStateChangedEvent;
             _resetDataButton.onClick.AddListener(() => { PlayerDataManager.Instance.ClearAndApply();});
+            _startHeliEventButton.onClick.AddListener(() => { HelicopterEvent.Instance.StartEvent();});
         }
 
         private void Instance_OnStateChangedEvent(float obj)
