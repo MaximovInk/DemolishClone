@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace MaximovInk
 {
@@ -18,6 +19,15 @@ namespace MaximovInk
         private void Awake()
         {
             _groundRenderer = _ground.GetComponent<MeshRenderer>();
+
+            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+
+            ApplyCurrentMaterial();
+        }
+
+        private void Instance_OnLevelComplete()
+        {
+            _currentMaterialIndex = Random.Range(0, _materials.Length);
 
             ApplyCurrentMaterial();
         }
