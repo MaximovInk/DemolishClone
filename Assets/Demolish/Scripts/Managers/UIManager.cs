@@ -1,15 +1,13 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace MaximovInk
 {
     public class UIManager : MonoBehaviourSingleton<UIManager>
     {
-        [SerializeField] private TextMeshProUGUI buildingConditionText;
-
-        public void SetBuildingCondition(float state)
+        private void Awake()
         {
-            buildingConditionText.text = $"Building Condition: {(int)(state * 100)}\n";
+            
         }
 
     }

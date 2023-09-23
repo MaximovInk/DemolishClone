@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace MaximovInk
@@ -11,6 +10,8 @@ namespace MaximovInk
         public event Action OnLevelComplete;
 
         [SerializeField] private float levelCompleteThreshold = 0.1f;
+        [SerializeField] private Transform _refParent;
+        [SerializeField] private GameObject ExplosivePrefab;
 
         private float _buildingState = 0f;
         private FracturedObject _fracturedObject;
@@ -18,19 +19,25 @@ namespace MaximovInk
 
         private FracturedObject[] _refObjects;
 
-        [SerializeField] private Transform _refParent;
+        //private int _currentIndex = 0;
 
-        [SerializeField] private GameObject ExplosivePrefab;
-
-        private int _currentIndex = 0;
+        private int CurrentRefIndex => (Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1,0, int.MaxValue)) % _refObjects.Length;
 
         private const int MAX_EXPLOSIONS = 5;
 
         private readonly List<GameObject> _explosionsList = new();
 
+        private const float STATE_OFFSET = 0.5f;
+
+        public bool IsCompleted { get; private set; } = false;
+
+        public void UpdateBuildingState()
+        {
+            _isDirty = true;
+        }
+
         private void Awake()
         {
-
             _refObjects = new FracturedObject[_refParent.childCount];
 
             for (var a = 0; a < _refParent.childCount; a++)
@@ -38,34 +45,26 @@ namespace MaximovInk
                 _refObjects[a] = _refParent.GetChild(a).GetComponent<FracturedObject>();
             }
 
-            NextLevelInit();
             OnStateChangedEvent += LevelManager_OnStateChangedEvent;
+
+            PlayerDataManager.Instance.OnLoadEvent += Instance_OnLoadEvent;
         }
 
-        public void UpdateBuildingState()
+        private void Instance_OnLoadEvent(PlayerData obj)
         {
-            _isDirty = true;
-        }
+            
+            NextLevelInit();
 
-        private void LevelManager_OnStateChangedEvent(float obj)
-        {
-            if (obj < levelCompleteThreshold && !levelCompleted)
-            {
-                levelCompleted = true;
-                MKUtils.Invoke(this, () =>
-                {
-                    LevelComplete();
-                    NextLevelInit();
-                }, 2f);
-
-                OnStateChangedEvent?.Invoke(0f);
-            }
         }
 
         private void NextLevelInit()
         {
-            levelCompleted = false;
-            var objRef = _refObjects[_currentIndex];
+            DestroyCurrentBuilding();
+
+            IsCompleted = false;
+
+            Debug.Log(CurrentRefIndex);
+            var objRef = _refObjects[CurrentRefIndex];
             _fracturedObject = Instantiate(objRef);
 
             _fracturedObject.gameObject.SetActive(true);
@@ -73,12 +72,34 @@ namespace MaximovInk
 
             _fracturedObject.OnChunkDetachEvent += _fracturedObject_OnChunkDetachEvent;
 
-            _currentIndex++;
-            if (_currentIndex >= _refObjects.Length)
+        }
+
+        private void LevelManager_OnStateChangedEvent(float obj)
+        {
+            if (obj < levelCompleteThreshold && !IsCompleted)
             {
-                _currentIndex = 0;
+                IsCompleted = true;
+                MKUtils.Invoke(this, () =>
+                {
+                    OnLevelComplete?.Invoke();
+                    NextLevelInit();
+                }, 2f);
+
+                OnStateChangedEvent?.Invoke(0f);
+            }
+        }
+
+        private void DestroyCurrentBuilding()
+        {
+            if (_fracturedObject == null) return;
+
+            var chunks = _fracturedObject.ListFracturedChunks;
+            foreach (var t in chunks)
+            {
+                Destroy(t.gameObject);
             }
 
+            Destroy(_fracturedObject.gameObject);
         }
 
         private void _fracturedObject_OnChunkDetachEvent(FracturedChunk obj)
@@ -99,30 +120,9 @@ namespace MaximovInk
             Destroy(explosionInstance, 5f);
         }
 
-
-
-        private void LevelComplete()
-        {
-            if (_fracturedObject != null)
-            {
-                var chunks = _fracturedObject.ListFracturedChunks;
-                foreach (var t in chunks)
-                {
-                    Destroy(t.gameObject);
-                }
-
-                Destroy(_fracturedObject.gameObject);
-            }
-            OnLevelComplete?.Invoke();
-        }
-
-        private bool levelCompleted = false;
-
-        private const float STATE_OFFSET = 0.5f;
-
         private void LateUpdate()
         {
-            if (levelCompleted) return;
+            if (IsCompleted) return;
 
             if (_isDirty)
             {
