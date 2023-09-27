@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,6 +45,8 @@ namespace MaximovInk
         private Button _button;
         private Image _image;
 
+        public static event Action OnClickEvent;
+
         private void Awake()
         {
             _button = GetComponent<Button>();
@@ -59,6 +62,7 @@ namespace MaximovInk
             {
                 DeselectAll();
                 Select();
+                OnClickEvent?.Invoke();
             });
 
             UpdateUI();
@@ -157,6 +161,8 @@ namespace MaximovInk
 
             _textInfo.text = ammoText;
         }
+
+
 
     }
 }

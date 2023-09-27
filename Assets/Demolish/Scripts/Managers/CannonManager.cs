@@ -78,6 +78,11 @@ namespace MaximovInk
             }
         }
 
+        public AmmoData GetAmmoByID(int index)
+        {
+            return _ammoDatabase.GetAmmoData(index);
+        }
+
         private void Shoot()
         {
             var currentAmmo = _ammoDatabase.GetAmmoData(_currentAmmoIdx);

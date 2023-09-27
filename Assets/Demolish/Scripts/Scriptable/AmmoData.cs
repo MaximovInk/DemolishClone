@@ -13,5 +13,8 @@ namespace MaximovInk
         public float ExplodeRadius;
         public Vector3 Scale = Vector3.one;
         public Projectile Prefab;
+
+        public AudioClip _HitAudioClip;
+        public AudioClip _ShootAudioClip;
     }
 }
