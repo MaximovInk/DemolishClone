@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace MaximovInk
@@ -17,10 +16,10 @@ namespace MaximovInk
         private void Awake()
         {
             Init();
-            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+            LevelManager.Instance.OnNextLevelInit += InstanceOnNextLevelInit;
         }
 
-        private void Instance_OnLevelComplete()
+        private void InstanceOnNextLevelInit()
         {
             ProjectilePool.Instance.ReleaseProjectile(_releaseIndex, this);
         }

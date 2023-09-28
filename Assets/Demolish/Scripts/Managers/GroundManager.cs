@@ -20,12 +20,12 @@ namespace MaximovInk
         {
             _groundRenderer = _ground.GetComponent<MeshRenderer>();
 
-            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+            LevelManager.Instance.OnNextLevelInit += InstanceOnNextLevelInit;
 
             ApplyCurrentMaterial();
         }
 
-        private void Instance_OnLevelComplete()
+        private void InstanceOnNextLevelInit()
         {
             _currentMaterialIndex = Random.Range(0, _materials.Length);
 

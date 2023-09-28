@@ -7,6 +7,7 @@ namespace MaximovInk
     public class LevelManager : MonoBehaviourSingleton<LevelManager>
     {
         public event Action<float> OnStateChangedEvent;
+        public event Action OnNextLevelInit;
         public event Action OnLevelComplete;
 
         [SerializeField] private float levelCompleteThreshold = 0.1f;
@@ -76,9 +77,10 @@ namespace MaximovInk
             if (obj < levelCompleteThreshold && !IsCompleted)
             {
                 IsCompleted = true;
-                MKUtils.Invoke(this, () =>
+                OnLevelComplete?.Invoke();
+                this.Invoke(() =>
                 {
-                    OnLevelComplete?.Invoke();
+                    OnNextLevelInit?.Invoke();
                     NextLevelInit();
                 }, 2f);
 

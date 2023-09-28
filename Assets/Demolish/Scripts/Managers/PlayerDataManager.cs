@@ -51,7 +51,7 @@ namespace MaximovInk
         
         private void Awake()
         {
-            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+            LevelManager.Instance.OnNextLevelInit += InstanceOnNextLevelInit;
         }
 
         private void Start()
@@ -59,7 +59,7 @@ namespace MaximovInk
             Load();
         }
 
-        private void Instance_OnLevelComplete()
+        private void InstanceOnNextLevelInit()
         {
             _playerData.CurrentLevel++;
             Save();
