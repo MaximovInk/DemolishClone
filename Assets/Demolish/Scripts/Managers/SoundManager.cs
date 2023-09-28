@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MaximovInk
 {
     [RequireComponent(typeof(AudioSource))]
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : MonoBehaviourSingleton<SoundManager>
     {
         [SerializeField] private AudioClip _backgroundMusic;
         [SerializeField] private AudioClip _buttonClickSound;
@@ -46,6 +46,11 @@ namespace MaximovInk
             if (_winSound == null) return;
 
             _source.PlayOneShot(_winSound);
+        }
+
+        public void PlayOneShot(AudioClip clip)
+        {
+            _source.PlayOneShot(clip);
         }
 
     }

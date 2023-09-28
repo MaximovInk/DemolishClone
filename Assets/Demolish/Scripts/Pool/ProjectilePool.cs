@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Pool;
 
 namespace MaximovInk
@@ -53,6 +52,7 @@ namespace MaximovInk
 
         private static void OnReturnedToPool(Projectile projectile)
         {
+            projectile.ResetSound();
             projectile.gameObject.SetActive(false);
         }
 

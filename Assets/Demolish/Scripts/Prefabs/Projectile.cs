@@ -11,6 +11,8 @@ namespace MaximovInk
 
         public bool IsReleased { get; set; }
 
+        private bool _isSound = false;
+
         public event Action OnChunkImpact;
         public event Action OnSetup;
         private void Awake()
@@ -67,6 +69,18 @@ namespace MaximovInk
             {
                 ProjectilePool.Instance.ReleaseProjectile(_releaseIndex, this);
             }
+
+            if (_initData.HitAudioClip != null && !_isSound)
+            {
+                Debug.Log("soundd");
+                SoundManager.Instance.PlayOneShot(_initData.HitAudioClip);
+                _isSound = true;
+            }
+        }
+
+        public void ResetSound()
+        {
+            _isSound = false;
         }
 
         private void Update  ()
