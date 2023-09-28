@@ -212,7 +212,11 @@ public class FracturedChunk : MonoBehaviour
                     {
                             
                         chunk.DetachFromObject();
-                        chunk.GetComponent<Rigidbody>().AddExplosionForce(relativeSpeed * FracturedObjectSource.EventDetachExitForce, otherRigidbody.transform.position, 0.0f, FracturedObjectSource.EventDetachUpwardsModifier);
+
+                        if (!chunk.TryGetComponent<Rigidbody>(out var rb)) return;
+                        if (otherRigidbody == null) return;
+
+                        rb.AddExplosionForce(relativeSpeed * FracturedObjectSource.EventDetachExitForce, otherRigidbody.transform.position, 0.0f, FracturedObjectSource.EventDetachUpwardsModifier);
                     }
                 }
             }

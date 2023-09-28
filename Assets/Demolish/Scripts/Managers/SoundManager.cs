@@ -34,7 +34,7 @@ namespace MaximovInk
 
         private void Instance_OnWeaponShootEvent(int ammoIndex)
         {
-            var clip = CannonManager.Instance.GetAmmoByID(ammoIndex)._ShootAudioClip;
+            var clip = CannonManager.Instance.GetAmmoByID(ammoIndex).ShootAudioClip;
 
             if (clip == null) return;
 

@@ -54,12 +54,13 @@ namespace MaximovInk
         private static void OnReturnedToPool(Projectile projectile)
         {
             projectile.gameObject.SetActive(false);
-            projectile.ResetDestroyed();
         }
 
 
         private static void OnTakeFromPool(Projectile projectile)
         {
+            projectile.IsReleased = false;
+            //projectile.ResetDestroyed();
             projectile.gameObject.SetActive(true);
         }
 

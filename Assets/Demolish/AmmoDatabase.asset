@@ -15,41 +15,62 @@ MonoBehaviour:
   AmmoTypes:
   - NameID: basicAmmo
     ForceMultiplier: 1
-    IsExplode: 0
-    ExplodeForce: 0
-    ExplodeRadius: 0
     Scale: {x: 1, y: 1, z: 1}
     Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
       type: 3}
+    HitAudioClip: {fileID: 0}
+    ShootAudioClip: {fileID: 0}
+    IsExplode: 0
+    ExplodeForce: 0
+    ExplodeRadius: 0
+    CustomExplosionPrefab: {fileID: 0}
+    DestroyOnExplode: 0
   - NameID: fireAmmo
     ForceMultiplier: 1
-    IsExplode: 1
-    ExplodeForce: 1
-    ExplodeRadius: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
     Prefab: {fileID: 1089479466394460019, guid: 96f9b1a452e982243bdab38529625448,
       type: 3}
+    HitAudioClip: {fileID: 0}
+    ShootAudioClip: {fileID: 0}
+    IsExplode: 1
+    ExplodeForce: 1
+    ExplodeRadius: 1
+    CustomExplosionPrefab: {fileID: 0}
+    DestroyOnExplode: 0
   - NameID: bombAmmo
     ForceMultiplier: 1
+    Scale: {x: 1.1, y: 1.1, z: 1.1}
+    Prefab: {fileID: 5712131448385056321, guid: 773ad53a31d1cd440ab9dee317edfa8d,
+      type: 3}
+    HitAudioClip: {fileID: 0}
+    ShootAudioClip: {fileID: 0}
     IsExplode: 1
     ExplodeForce: 2
     ExplodeRadius: 2
-    Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
+    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
       type: 3}
+    DestroyOnExplode: 1
   - NameID: rocketAmmo
     ForceMultiplier: 1
+    Scale: {x: 1.1, y: 1.1, z: 1.1}
+    Prefab: {fileID: 903065551824257168, guid: c30cdb897a5b5314cafcc1c62bd0d467, type: 3}
+    HitAudioClip: {fileID: 0}
+    ShootAudioClip: {fileID: 0}
     IsExplode: 1
     ExplodeForce: 3
     ExplodeRadius: 3
-    Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
+    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
       type: 3}
+    DestroyOnExplode: 1
   - NameID: nuclearBombAmmo
     ForceMultiplier: 1
+    Scale: {x: 1.1, y: 1.1, z: 1.1}
+    Prefab: {fileID: 309080978375559889, guid: 70d68d9abec1a124ea53bf87b3b5b109, type: 3}
+    HitAudioClip: {fileID: 0}
+    ShootAudioClip: {fileID: 0}
     IsExplode: 1
     ExplodeForce: 100
     ExplodeRadius: 100
-    Scale: {x: 1.1, y: 1.1, z: 1.1}
-    Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
+    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
       type: 3}
+    DestroyOnExplode: 1

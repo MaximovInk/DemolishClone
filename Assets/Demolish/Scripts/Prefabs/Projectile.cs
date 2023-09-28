@@ -12,6 +12,8 @@ namespace MaximovInk
 
         public bool IsReleased { get; set; }
 
+        public event Action OnChunkImpact;
+        public event Action OnSetup;
         private void Awake()
         {
             Init();
@@ -45,23 +47,33 @@ namespace MaximovInk
                 ProjectilePool.Instance.ReleaseProjectile(_releaseIndex, this);
             }, CannonManager.Instance.GetProjectileHideDelay());
 
+            OnSetup?.Invoke();
         }
 
         private void OnImpact()
         {
             LevelManager.Instance.UpdateBuildingState();
-        }
+            OnChunkImpact?.Invoke();
 
-        private bool _isDestroyed = false;
+            if (IsReleased) return;
 
+            if (_initData.IsExplode && _initData.CustomExplosionPrefab)
+            {
+                var explosionPrefab = Instantiate(_initData.CustomExplosionPrefab);
+                explosionPrefab.transform.position = transform.position;
+                Destroy(explosionPrefab, 7f);
+            }
 
-        public void ResetDestroyed()
-        {
-            _isDestroyed = false;
+            if (_initData.IsExplode && _initData.DestroyOnExplode)
+            {
+                ProjectilePool.Instance.ReleaseProjectile(_releaseIndex, this);
+            }
         }
 
         private void Update  ()
         {
+            if (IsReleased) return;
+
             var chunkRaycast = FracturedChunk.ChunkRaycast(
                 transform.position,
                 _rigidbody.velocity.normalized,
@@ -76,21 +88,46 @@ namespace MaximovInk
             if (_initData.IsExplode)
             {
                 chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
-            }
 
-            _isDestroyed = true; 
-            OnImpact();
+                OnImpact();
+            }
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            var chunk = other.gameObject.GetComponentInParent<FracturedChunk>();
-            if (chunk && _initData.IsExplode)
+            if (IsReleased) return;
+
+            var colliders =  Physics.OverlapSphere(transform.position, _initData.ExplodeRadius,
+                CannonManager.Instance.ExplosionLayerMask);
+
+
+            foreach (var coll in colliders)
             {
-                chunk.Impact(transform.position, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+                if (!coll.gameObject.TryGetComponent<FracturedChunk>(out var chunk))
+                    chunk = coll.gameObject.GetComponentInParent<FracturedChunk>();
+
+                if (chunk && _initData.IsExplode)
+                {
+                    chunk.Impact(transform.position, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+                }
+
+                if (chunk)
+                    OnImpact();
             }
 
-            OnImpact();
+
+            {
+                if (!other.gameObject.TryGetComponent<FracturedChunk>(out var chunk))
+                    chunk = other.gameObject.GetComponentInParent<FracturedChunk>();
+
+                if (chunk && _initData.IsExplode)
+                {
+                    chunk.Impact(transform.position, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+                }
+
+                if (chunk)
+                    OnImpact();
+            }
         }
 
         private void OnDrawGizmos()

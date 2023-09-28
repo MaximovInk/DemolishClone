@@ -27,6 +27,10 @@ namespace MaximovInk
 
         public event Action<int> OnWeaponShootEvent;
 
+        [SerializeField] private LayerMask _explosionLayerMask;
+
+        public LayerMask ExplosionLayerMask => _explosionLayerMask;
+
         public int CurrentAmmoIndex
         {
             get => _currentAmmoIdx;
