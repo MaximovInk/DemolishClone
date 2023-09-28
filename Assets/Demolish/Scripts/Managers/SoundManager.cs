@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MaximovInk
@@ -9,6 +10,27 @@ namespace MaximovInk
         [SerializeField] private AudioClip _buttonClickSound;
         [SerializeField] private AudioClip _winSound;
         [SerializeField] private AudioClip _rewardSound;
+
+        public bool IsSoundActive
+        {
+            get => _isSoundActive;
+            set
+            {
+                var temp = _isSoundActive;
+
+                _isSoundActive = value;
+
+                if (temp != value)
+                {
+                    OnSoundStateChanged?.Invoke(value);
+                }
+            }
+        }
+
+        private bool _isSoundActive = true;
+
+        public event Action<bool> OnSoundStateChanged;
+
 
         private AudioSource _source;
 
@@ -29,7 +51,7 @@ namespace MaximovInk
         {
             if (_buttonClickSound == null) return;
 
-            _source.PlayOneShot(_buttonClickSound);
+            PlayOneShot(_buttonClickSound);
         }
 
         private void Instance_OnWeaponShootEvent(int ammoIndex)
@@ -38,18 +60,20 @@ namespace MaximovInk
 
             if (clip == null) return;
 
-            _source.PlayOneShot(clip);
+            PlayOneShot(clip);
         }
 
         private void Instance_OnLevelComplete()
         {
             if (_winSound == null) return;
 
-            _source.PlayOneShot(_winSound);
+            PlayOneShot(_winSound);
         }
 
         public void PlayOneShot(AudioClip clip)
         {
+            if (!IsSoundActive) return;
+            
             _source.PlayOneShot(clip);
         }
 

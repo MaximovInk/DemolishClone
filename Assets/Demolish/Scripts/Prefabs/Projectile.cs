@@ -72,7 +72,6 @@ namespace MaximovInk
 
             if (_initData.HitAudioClip != null && !_isSound)
             {
-                Debug.Log("soundd");
                 SoundManager.Instance.PlayOneShot(_initData.HitAudioClip);
                 _isSound = true;
             }
@@ -87,23 +86,25 @@ namespace MaximovInk
         {
             if (IsReleased) return;
 
-            var chunkRaycast = FracturedChunk.ChunkRaycast(
-                transform.position,
-                _rigidbody.velocity.normalized,
-                out var hitInfo,
-                 CannonManager.Instance.GetRaycastLength());
+            /*
+              var chunkRaycast = FracturedChunk.ChunkRaycast(
+                 transform.position,
+                 _rigidbody.velocity.normalized,
+                 out var hitInfo,
+                  CannonManager.Instance.GetRaycastLength());
 
 
-            Debug.DrawRay(transform.position, _rigidbody.velocity.normalized * CannonManager.Instance.GetRaycastLength());
+             Debug.DrawRay(transform.position, _rigidbody.velocity.normalized * CannonManager.Instance.GetRaycastLength());
 
-            if (!chunkRaycast) return;
+             if (!chunkRaycast) return;
 
-            if (_initData.IsExplode)
-            {
-                chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
+             if (_initData.IsExplode)
+             {
+                 chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
 
-                OnImpact();
-            }
+                 OnImpact();
+             }
+             */
         }
 
         private void OnCollisionEnter(Collision other)
