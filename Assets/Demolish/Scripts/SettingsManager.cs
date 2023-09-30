@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 namespace MaximovInk
 {
+    [System.Serializable]
+    public struct ButtonStruct
+    {
+        public Sprite NotActive;
+        public Sprite Active;
+    }
+
     public class SettingsManager : MonoBehaviourSingleton<SettingsManager>
     {
         private const string SETTINGS_KEY = "SETTINGS_";
@@ -11,8 +18,7 @@ namespace MaximovInk
         [SerializeField] private Button _soundButton;
         [SerializeField] private Button _restartButton;
 
-        [SerializeField] private Color _disabledColor = Color.gray;
-        [SerializeField] private Color _enabledColor = Color.white;
+        [SerializeField] private ButtonStruct _soundButtonStruct;
 
         private void Awake()
         {
@@ -36,7 +42,7 @@ namespace MaximovInk
         private void Instance_OnSoundStateChanged(bool obj)
         {
             PlayerPrefs.SetInt(SETTINGS_KEY + "SOUND", obj?1:0);
-            _soundButton.targetGraphic.color = obj ? _enabledColor : _disabledColor;
+            _soundButton.GetComponent<Image>().sprite = obj ? _soundButtonStruct.Active : _soundButtonStruct.NotActive;
         }
     }
 }
