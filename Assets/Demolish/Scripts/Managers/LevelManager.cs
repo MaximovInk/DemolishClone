@@ -47,6 +47,7 @@ namespace MaximovInk
             OnStateChangedEvent += LevelManager_OnStateChangedEvent;
 
             PlayerDataManager.Instance.OnLoadEvent += Instance_OnLoadEvent;
+            CannonManager.Instance.OnWeaponShootEvent += _ => { _shootCount++; };
         }
 
         private void Instance_OnLoadEvent(PlayerData obj)
@@ -72,16 +73,50 @@ namespace MaximovInk
 
         }
 
+        public void NextLevel()
+        {
+            _shootCount = 0;
+            OnNextLevelInit?.Invoke();
+            NextLevelInit();
+        }
+
+        private int _shootCount;
+
+        private int CalculateStars(int shootCount)
+        {
+            int stars = 1;
+
+            if (shootCount < 5)
+            {
+                stars++;
+            }
+
+            if (shootCount < 10)
+            {
+                stars++;
+            }
+
+            return stars;
+        }
+
         private void LevelManager_OnStateChangedEvent(float obj)
         {
             if (obj < levelCompleteThreshold && !IsCompleted)
             {
                 IsCompleted = true;
                 OnLevelComplete?.Invoke();
+                /*
+                  this.Invoke(() =>
+                 {
+                     OnNextLevelInit?.Invoke();
+                     NextLevelInit();
+                 }, 2f);
+                 */
+
                 this.Invoke(() =>
                 {
-                    OnNextLevelInit?.Invoke();
-                    NextLevelInit();
+                    UIManager.Instance.RewardScreen.Stars = CalculateStars(_shootCount);
+                    UIManager.Instance.RewardScreen.Show();
                 }, 2f);
 
                 OnStateChangedEvent?.Invoke(0f);

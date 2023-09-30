@@ -8,17 +8,20 @@ namespace MaximovInk
     {
         public int Stars;
         public int CurrentLevel;
+        public int Stage;
     }
 
     public static class SerializationPlayerData
     {
         private const string STARS_KEY = "PS_STARS";
         private const string LEVEL_KEY = "PS_CURRENT_LEVEL";
+        private const string STAGE_KEY = "PS_STAGE";
 
         public static void SetData(PlayerData data)
         {
             PlayerPrefs.SetInt(STARS_KEY, data.Stars);
             PlayerPrefs.SetInt(LEVEL_KEY, data.CurrentLevel);
+            PlayerPrefs.SetInt(STAGE_KEY, data.Stage);
             PlayerPrefs.Save();
         }
 
@@ -27,7 +30,8 @@ namespace MaximovInk
             var data = new PlayerData
             {
                 Stars = PlayerPrefs.GetInt(STARS_KEY, 0),
-                CurrentLevel = PlayerPrefs.GetInt(LEVEL_KEY, 1)
+                CurrentLevel = PlayerPrefs.GetInt(LEVEL_KEY, 1),
+                Stage = PlayerPrefs.GetInt(STAGE_KEY, 0)
             };
 
             return data;
@@ -45,6 +49,7 @@ namespace MaximovInk
 
         public int GetStars() => _playerData.Stars;
         public int GetLevel() => _playerData.CurrentLevel;
+        public int GetStage() => _playerData.Stage;
 
         public event Action<PlayerData> OnLoadEvent;
         public event Action<PlayerData> OnSaveEvent;
@@ -59,9 +64,16 @@ namespace MaximovInk
             Load();
         }
 
+        private const int MAX_STAGE = 4;
+
         private void InstanceOnNextLevelInit()
         {
             _playerData.CurrentLevel++;
+            _playerData.Stage++;
+
+            if (_playerData.Stage > MAX_STAGE)
+                _playerData.Stage = 0;
+
             Save();
         }
 

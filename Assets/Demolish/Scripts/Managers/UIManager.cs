@@ -11,5 +11,7 @@ namespace MaximovInk
         [SerializeField] private Sprite _weaponButtonDeselectSprite;
         public Sprite WeaponButtonDeselectSprite => _weaponButtonDeselectSprite;
 
+        public RewardScreen RewardScreen;
+
     }
 }
