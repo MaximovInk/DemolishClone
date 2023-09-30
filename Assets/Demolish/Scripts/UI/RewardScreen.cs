@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ namespace MaximovInk
 
         public int Stars = 0;
 
+        public event Action OnRewardEvent;
 
         public void Show()
         {
@@ -49,6 +51,7 @@ namespace MaximovInk
             gameObject.SetActive(false);
             PlayerDataManager.Instance.AddStars(Stars*3);
             LevelManager.Instance.NextLevel();
+            OnRewardEvent?.Invoke();
         }
 
         public void GetNormal()
@@ -56,6 +59,7 @@ namespace MaximovInk
             gameObject.SetActive(false);
             PlayerDataManager.Instance.AddStars(Stars);
             LevelManager.Instance.NextLevel();
+            OnRewardEvent?.Invoke();
         }
     }
 }

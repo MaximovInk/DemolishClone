@@ -45,6 +45,14 @@ namespace MaximovInk
             LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
             CannonManager.Instance.OnWeaponShootEvent += Instance_OnWeaponShootEvent;
             WeaponButton.OnClickEvent += WeaponButton_OnClickEvent;
+            UIManager.Instance.RewardScreen.OnRewardEvent += RewardScreen_OnRewardEvent;
+        }
+
+        private void RewardScreen_OnRewardEvent()
+        {
+            if (_rewardSound == null) return;
+
+            PlayOneShot(_rewardSound);
         }
 
         private void WeaponButton_OnClickEvent()
