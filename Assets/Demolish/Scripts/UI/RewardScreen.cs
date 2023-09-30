@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+using GamePush;
+
 namespace MaximovInk
 {
 
@@ -48,10 +50,18 @@ namespace MaximovInk
 
         public void GetMultiplied()
         {
-            gameObject.SetActive(false);
-            PlayerDataManager.Instance.AddStars(Stars*3);
-            LevelManager.Instance.NextLevel();
-            OnRewardEvent?.Invoke();
+            GP_Ads.ShowFullscreen(null, isFailed =>
+            {
+                if (!isFailed)
+                {
+                    PlayerDataManager.Instance.AddStars(Stars * 3);
+                    LevelManager.Instance.NextLevel();
+                }
+
+                OnRewardEvent?.Invoke();
+                gameObject.SetActive(false);
+            });
+
         }
 
         public void GetNormal()

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using GP_Utilities.Console;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ namespace MaximovInk
 
         private void Awake()
         {
+            //GP_ConsoleController.Instance.AdsConsoleLogs = true;
+
             LevelManager.Instance.OnStateChangedEvent += Instance_OnStateChangedEvent;
             _resetDataButton.onClick.AddListener(() =>
             {
