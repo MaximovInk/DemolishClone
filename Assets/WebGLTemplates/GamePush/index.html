@@ -7,49 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>{{{ PRODUCT_NAME }}}</title>
   <link rel="stylesheet" href="TemplateData/style.css">
-  <script src="TemplateData/gamepush-unity.js"></script>
-
-  <script>
-    const projectId = "{{{ PROJECT_ID.replace(/ /g, '') }}}";
-    const publicToken = "{{{ TOKEN.replace(/ /g, '') }}}";
-    const showPreloaderAd = "{{{ SHOW_PRELOADER_AD.replace(/ /g, '') }}}";
-    const overlayBackgroundColor = "{{{ OVERLAY_BACKGROUND_COLOR.replace(/ /g, '') }}}";
-    const progressBarFillColor = "{{{ PROGRESS_BAR_FILL_COLOR.replace(/ /g, '') }}}";
-    const progressBarBackgroundColor = "{{{ PROGRESS_BAR_BACKGROUND_COLOR.replace(/ /g, '') }}}";
-    const progressBarBorderColor = "{{{ PROGRESS_BAR_BORDER_COLOR.replace(/ /g, '') }}}";
-  </script>
-
+  <script src="TemplateData/gamescore-unity.js"></script>
   <script>
     var _unityAwaiter = {};
     _unityAwaiter.ready = new Promise((resolve, reject) => {
       _unityAwaiter.done = resolve;
       _unityAwaiter.abort = reject;
     });
+    window.onGSInit = async (gs) => {
 
-    var _gpAwaiter = {};
-    _gpAwaiter.ready = new Promise((resolve) => {
-      _gpAwaiter.done = resolve;
-    });
-
-    window.unityInstance = null;
-    window.onGPError = () => _gpAwaiter.done();
-
-    window.onGPInit = async (gp) => {
-      if (showPreloaderAd == "true" || showPreloaderAd == "1") {
-        gp.ads.showPreloader();
+      #if _SHOW_PRELOADER_AD
+      const showPreloaderAd = "{{{ _SHOW_PRELOADER_AD }}}";
+      if (showPreloaderAd) {
+        gs.ads.showPreloader();
       }
-
-      window.GamePush = new GamePushUnity(gp);
-      gp.player.ready.finally(_gpAwaiter.done);
+      #endif
 
       await _unityAwaiter.ready;
-      gp.gameStart();
+      window.GameScore = new GameScoreUnity(gs, unityI);
     };
   </script>
 
-  <script>
-    ((g, a, m, e) => { let o = () => { let p = document.createElement("script"); p.src = `${a[0]}?projectId=${m}&publicToken=${e}`, p.onerror = () => { a.shift(), a.length > 0 ? (o(), p.remove()) : "onGPError" in g && g.onGPError() }, document.head.appendChild(p) }; o() })(window, ["https://gs.eponesh.com/sdk/gamepush.js", "https://s3.eponesh.com/files/gs/sdk/gamepush.js", "gp-bundle/gamepush.js"], projectId, publicToken);
-  </script>
+  <!-- >>> replace with your gamescore load script here <<< -->
+  <script async
+    src="https://gs.eponesh.com/sdk/game-score.js?projectId={{{ PROJECT_ID }}}&publicToken={{{ TOKEN }}}&callback=onGSInit"></script>
+  <!-- >>> replace with your gamescore load script here <<< -->
 
 </head>
 
@@ -93,21 +75,9 @@
     const progressBarFull = document.querySelector("#unity-progress-bar-full");
     const spinner = document.querySelector('.spinner');
 
-    if (overlayBackgroundColor !== "-" && overlayBackgroundColor !== " " && overlayBackgroundColor !== "")
-      canvas.style.background = overlayBackgroundColor;
-
-    if (progressBarFillColor !== "-" && progressBarFillColor !== " " && progressBarFillColor !== "")
-      progressBarFull.style.background = progressBarFillColor;
-
-    if (progressBarBackgroundColor !== "-" && progressBarBackgroundColor !== " " && progressBarBackgroundColor !== "")
-      progressBarEmpty.style.background = progressBarBackgroundColor;
-
-    if (progressBarBorderColor !== "-" && progressBarBorderColor !== " " && progressBarBorderColor !== "")
-      progressBarEmpty.style.border.color = progressBarBorderColor;
-
-
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       container.className = "unity-mobile";
+      config.devicePixelRatio = 1;
     }
 
     #if BACKGROUND_FILENAME
@@ -115,24 +85,24 @@
     #endif
     loadingCover.style.display = "";
 
-    const unityLoader = document.createElement("script");
-    unityLoader.src = loaderUrl;
-    unityLoader.onload = async () => {
-      await _gpAwaiter.ready;
+    const script = document.createElement("script");
+    var unityI = null;
+    script.src = loaderUrl;
+    script.onload = () => {
       createUnityInstance(canvas, config, (progress) => {
         spinner.style.display = "none";
         progressBarEmpty.style.display = "";
         progressBarFull.style.width = `${100 * progress}%`;
       }).then((unityInstance) => {
-        window.unityInstance = unityInstance;
         _unityAwaiter.done(unityInstance);
+        unityI = unityInstance;
         loadingCover.style.display = "none";
       }).catch((message) => {
         _unityAwaiter.abort(message);
         alert(message);
       });
     };
-    document.body.appendChild(unityLoader);
+    document.body.appendChild(script);
 
     document.addEventListener("pointerdown", () => {
       container.focus();
