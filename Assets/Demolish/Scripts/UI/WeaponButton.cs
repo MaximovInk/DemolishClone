@@ -35,7 +35,7 @@ namespace MaximovInk
     [RequireComponent(typeof(Button),typeof(Image))]
     public class WeaponButton : MonoBehaviour
     {
-        private static List<WeaponButton> _buttons = new();
+        private static readonly List<WeaponButton> _buttons = new();
 
         [SerializeField] private int _ammoID;
         [SerializeField] private TextMeshProUGUI _textInfo;
@@ -60,8 +60,7 @@ namespace MaximovInk
 
             _button.onClick.AddListener(() =>
             {
-                DeselectAll();
-                Select();
+                Select(_ammoID);
                 OnClickEvent?.Invoke();
             });
 
@@ -83,7 +82,6 @@ namespace MaximovInk
         {
             WeaponSerialization.SetAmmoData(_ammoID, _count);
         }
-
 
         private void Deserialize()
         {
@@ -123,6 +121,7 @@ namespace MaximovInk
 
         public static void Select(int index)
         {
+
             DeselectAll();
             var btn = _buttons.Find(n => n._ammoID == index);
             btn.Select();
