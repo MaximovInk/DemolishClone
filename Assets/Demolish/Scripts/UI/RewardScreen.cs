@@ -6,8 +6,7 @@ using GamePush;
 
 namespace MaximovInk
 {
-
-    [System.Serializable]
+    [Serializable]
     public struct StageSetStruct
     {
         public Sprite Point;
@@ -15,6 +14,8 @@ namespace MaximovInk
 
     public class RewardScreen : MonoBehaviour
     {
+        private const string REWARD_ID = "STARS_MULTIPLY";
+
         [SerializeField] private StageSetStruct _completedStruct;
         [SerializeField] private StageSetStruct _normalStruct;
 
@@ -48,28 +49,50 @@ namespace MaximovInk
 
         }
 
+        private int _multipliedStars = 0;
+
+        private void NextLevel()
+        {
+            PlayerDataManager.Instance.AddStars(_multipliedStars);
+            LevelManager.Instance.NextLevel();
+            OnRewardEvent?.Invoke();
+            gameObject.SetActive(false);
+        }
+
         public void GetMultiplied()
         {
-            GP_Ads.ShowFullscreen(null, isFailed =>
+            _multipliedStars = Stars;
+            if (!GP_Ads.IsRewardedAvailable())
             {
-                if (!isFailed)
-                {
-                    PlayerDataManager.Instance.AddStars(Stars * 3);
-                    LevelManager.Instance.NextLevel();
-                }
+                NextLevel();
+                return;
+            }
 
-                OnRewardEvent?.Invoke();
-                gameObject.SetActive(false);
-            });
+            GP_Ads.ShowRewarded(REWARD_ID, 
+                idOrTag =>
+                {
+                    if (idOrTag != REWARD_ID) return;
+
+                    _multipliedStars *= 3;
+
+                    NextLevel();
+                }, 
+                null, 
+                success =>
+                {
+                    if (success) return;
+
+                    NextLevel();
+                });
+
 
         }
 
         public void GetNormal()
         {
-            gameObject.SetActive(false);
-            PlayerDataManager.Instance.AddStars(Stars);
-            LevelManager.Instance.NextLevel();
-            OnRewardEvent?.Invoke();
+            _multipliedStars = Stars;
+
+            NextLevel();
         }
     }
 }

@@ -37,6 +37,8 @@ namespace MaximovInk
     {
         private static readonly List<WeaponButton> _buttons = new();
 
+        public int AmmoID => _ammoID;
+
         [SerializeField] private int _ammoID;
         [SerializeField] private TextMeshProUGUI _textInfo;
         [SerializeField] private Image _iconImage;
