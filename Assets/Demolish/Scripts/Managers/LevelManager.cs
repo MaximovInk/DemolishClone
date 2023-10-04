@@ -86,14 +86,13 @@ namespace MaximovInk
         {
             int stars = 1;
 
-            if (shootCount < 5)
+            if (shootCount < 20)
             {
-                stars++;
+                stars = 2;
             }
-
-            if (shootCount < 10)
+            else if (shootCount < 10)
             {
-                stars++;
+                stars = 3;
             }
 
             return stars;
