@@ -21,7 +21,8 @@ namespace MaximovInk
 
         [SerializeField] private Image[] _points;
         [SerializeField] private Image[] _lines;
-        [SerializeField] private GameObject[] _stars;
+       // [SerializeField] private GameObject[] _stars;
+        [SerializeField] private StarsAnimation _starAnimation;
 
         public int Stars = 0;
 
@@ -31,10 +32,14 @@ namespace MaximovInk
         {
             gameObject.SetActive(true);
 
-            for (var i = 0; i < _stars.Length; i++)
-            {
-                _stars[i].SetActive((i + 1) <= Stars);
-            }
+            /*
+              for (var i = 0; i < _stars.Length; i++)
+             {
+                 _stars[i].SetActive((i + 1) <= Stars);
+             }
+             */
+
+            _starAnimation.Show(Stars);
 
             var stage = PlayerDataManager.Instance.GetStage();
 
