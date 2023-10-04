@@ -23,7 +23,8 @@ MonoBehaviour:
     IsExplode: 0
     ExplodeForce: 0
     ExplodeRadius: 0
-    CustomExplosionPrefab: {fileID: 0}
+    CustomExplosionPrefab: {fileID: 165672, guid: e083ed24fc4a7dc46907c043326fd31d,
+      type: 3}
     DestroyOnExplode: 0
   - NameID: fireAmmo
     ForceMultiplier: 1
@@ -35,7 +36,8 @@ MonoBehaviour:
     IsExplode: 1
     ExplodeForce: 1
     ExplodeRadius: 1
-    CustomExplosionPrefab: {fileID: 0}
+    CustomExplosionPrefab: {fileID: 8194992990867289339, guid: eda461ed42bfeca4ba26b6ffe833127c,
+      type: 3}
     DestroyOnExplode: 0
   - NameID: bombAmmo
     ForceMultiplier: 1
@@ -47,7 +49,7 @@ MonoBehaviour:
     IsExplode: 1
     ExplodeForce: 2
     ExplodeRadius: 2
-    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
+    CustomExplosionPrefab: {fileID: 2398608829508964987, guid: 81776db40558cba42be866e6f9d8ac26,
       type: 3}
     DestroyOnExplode: 1
   - NameID: rocketAmmo
@@ -59,7 +61,7 @@ MonoBehaviour:
     IsExplode: 1
     ExplodeForce: 3
     ExplodeRadius: 3
-    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
+    CustomExplosionPrefab: {fileID: 2398608829508964987, guid: 55d3b232707eb1c4aa6b7a705c436fbf,
       type: 3}
     DestroyOnExplode: 1
   - NameID: nuclearBombAmmo
@@ -71,6 +73,6 @@ MonoBehaviour:
     IsExplode: 1
     ExplodeForce: 100
     ExplodeRadius: 100
-    CustomExplosionPrefab: {fileID: 6079288884554515491, guid: 2bcbade65abd8dd4dadb04edecd6bbfe,
+    CustomExplosionPrefab: {fileID: 4893767420844493718, guid: 4c221074b4bf3b746bec0dc86ed89393,
       type: 3}
     DestroyOnExplode: 1
