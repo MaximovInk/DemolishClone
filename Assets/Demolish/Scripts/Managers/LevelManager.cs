@@ -145,6 +145,8 @@ namespace MaximovInk
                 _explosionsList.RemoveAt(0);
             }
 
+            if (ExplosivePrefab == null) return;
+
             var explosionInstance = Instantiate(ExplosivePrefab, transform, true);
             explosionInstance.transform.SetPositionAndRotation(obj.transform.position, obj.transform.rotation);
 

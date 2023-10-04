@@ -58,11 +58,11 @@ namespace MaximovInk
 
             if (IsReleased) return;
 
-            if (_initData.IsExplode && _initData.CustomExplosionPrefab)
+            if ( _initData.CustomExplosionPrefab)
             {
                 var explosionPrefab = Instantiate(_initData.CustomExplosionPrefab);
                 explosionPrefab.transform.position = transform.position;
-                Destroy(explosionPrefab, 7f);
+                Destroy(explosionPrefab, 3f);
             }
 
             if (_initData.IsExplode && _initData.DestroyOnExplode)
