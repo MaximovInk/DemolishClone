@@ -27,7 +27,7 @@ namespace MaximovInk
             _tower.LookAt(lookAt, Vector3.up);
             var newRot = _tower.rotation;
 
-            _tower.rotation = Quaternion.Lerp(originalRot, newRot, CannonManager.Instance.GetCannonSpeedRotation() * Time.deltaTime);
+            _tower.rotation = Quaternion.Lerp(originalRot, newRot, 1);
         }
 
         private void RotateGun(Vector3 lookAt)
@@ -40,7 +40,7 @@ namespace MaximovInk
             angles.y = _tower.rotation.eulerAngles.y;
             newRot.eulerAngles = angles;
 
-            _gun.rotation = Quaternion.Lerp(originalRot, newRot, CannonManager.Instance.GetCannonSpeedRotation() * Time.deltaTime);
+            _gun.rotation = Quaternion.Lerp(originalRot, newRot, 1);
         }
 
         private void Update()

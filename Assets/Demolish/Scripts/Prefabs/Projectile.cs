@@ -15,6 +15,9 @@ namespace MaximovInk
 
         public event Action OnChunkImpact;
         public event Action OnSetup;
+
+        private Vector3 _target;
+
         private void Awake()
         {
             Init();
@@ -80,31 +83,6 @@ namespace MaximovInk
         public void ResetSound()
         {
             _isSound = false;
-        }
-
-        private void Update  ()
-        {
-            if (IsReleased) return;
-
-            /*
-              var chunkRaycast = FracturedChunk.ChunkRaycast(
-                 transform.position,
-                 _rigidbody.velocity.normalized,
-                 out var hitInfo,
-                  CannonManager.Instance.GetRaycastLength());
-
-
-             Debug.DrawRay(transform.position, _rigidbody.velocity.normalized * CannonManager.Instance.GetRaycastLength());
-
-             if (!chunkRaycast) return;
-
-             if (_initData.IsExplode)
-             {
-                 chunkRaycast.Impact(hitInfo.point, _initData.ExplodeForce, _initData.ExplodeRadius, true);
-
-                 OnImpact();
-             }
-             */
         }
 
         private void OnCollisionEnter(Collision other)
