@@ -8,10 +8,9 @@ namespace MaximovInk
     {
         [Header("Cannon")]
         [SerializeField] private float _rotationSpeed = 10f;
-        [SerializeField] private Vector3 _lookOffset = new Vector3(0, 2, 0);
+        [SerializeField] private Vector3 _lookOffset = new(0, 2, 0);
         [Header("Projectile")]
         [SerializeField] private float _projectileForce = 50;
-        [SerializeField] private float _raycastProjectileLength = 1f;
         [SerializeField] private float _hideProjectileDelay = 5f;
         [Header("Ammo")]
         [SerializeField] private AmmoDatabase _ammoDatabase;
@@ -27,7 +26,6 @@ namespace MaximovInk
         public float GetCannonSpeedRotation() => _rotationSpeed;
         public Vector3 GetLookCannonOffset() => _lookOffset;
         public float GetProjectileHideDelay() => _hideProjectileDelay;
-        public float GetRaycastLength()=> _raycastProjectileLength;
 
         public event Action<int> OnWeaponShootEvent;
 
