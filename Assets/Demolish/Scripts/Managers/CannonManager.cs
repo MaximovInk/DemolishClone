@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace MaximovInk
 {
     public class CannonManager : MonoBehaviourSingleton<CannonManager>
     {
+        [Header("Cannon")]
+        [SerializeField] private float _rotationSpeed = 10f;
+        [SerializeField] private Vector3 _lookOffset = new Vector3(0, 2, 0);
         [Header("Projectile")]
         [SerializeField] private float _projectileForce = 50;
         [SerializeField] private float _raycastProjectileLength = 1f;
@@ -22,6 +24,8 @@ namespace MaximovInk
         private Transform _source;
         private Camera _camera;
 
+        public float GetCannonSpeedRotation() => _rotationSpeed;
+        public Vector3 GetLookCannonOffset() => _lookOffset;
         public float GetProjectileHideDelay() => _hideProjectileDelay;
         public float GetRaycastLength()=> _raycastProjectileLength;
 

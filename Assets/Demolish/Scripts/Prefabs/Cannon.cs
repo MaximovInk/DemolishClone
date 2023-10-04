@@ -8,8 +8,7 @@ namespace MaximovInk
 
         [SerializeField] private Transform _tower;
         [SerializeField] private Transform _gun;
-        [SerializeField] private float _rotationSpeed = 10f;
-        [SerializeField] private Vector3 _lookOffset = new Vector3(0, 2, 0);
+
         [SerializeField] private Transform _trajectoryParent;
 
         private Camera _camera;
@@ -28,20 +27,20 @@ namespace MaximovInk
             _tower.LookAt(lookAt, Vector3.up);
             var newRot = _tower.rotation;
 
-            _tower.rotation = Quaternion.Lerp(originalRot, newRot, _rotationSpeed * Time.deltaTime);
+            _tower.rotation = Quaternion.Lerp(originalRot, newRot, CannonManager.Instance.GetCannonSpeedRotation() * Time.deltaTime);
         }
 
         private void RotateGun(Vector3 lookAt)
         {
             var originalRot = _gun.rotation;
-            _gun.LookAt(lookAt+ _lookOffset, Vector3.up);
+            _gun.LookAt(lookAt+ CannonManager.Instance.GetLookCannonOffset(), Vector3.up);
 
             var newRot = _gun.rotation;
             var angles = newRot.eulerAngles;
             angles.y = _tower.rotation.eulerAngles.y;
             newRot.eulerAngles = angles;
 
-            _gun.rotation = Quaternion.Lerp(originalRot, newRot, _rotationSpeed * Time.deltaTime);
+            _gun.rotation = Quaternion.Lerp(originalRot, newRot, CannonManager.Instance.GetCannonSpeedRotation() * Time.deltaTime);
         }
 
         private void Update()
