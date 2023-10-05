@@ -84,13 +84,13 @@ namespace MaximovInk
 
         private int CalculateStars(int shootCount)
         {
-            int stars = 1;
+            var stars = 1;
 
             if (shootCount < 20)
             {
                 stars = 2;
             }
-            else if (shootCount < 10)
+            if (shootCount < 10)
             {
                 stars = 3;
             }
