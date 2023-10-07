@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace MaximovInk
 {
@@ -10,21 +12,23 @@ namespace MaximovInk
         public event Action OnNextLevelInit;
         public event Action OnLevelComplete;
 
-        [SerializeField] private float levelCompleteThreshold = 0.1f;
-        [SerializeField] private Transform _refParent;
+        [FormerlySerializedAs("levelCompleteThreshold")] [SerializeField]
+        private float _levelCompleteThreshold = 0.1f;
         [SerializeField] private GameObject ExplosivePrefab;
 
         private float _buildingState = 0f;
         private FracturedObject _fracturedObject;
         private bool _isDirty = false;
 
-        private FracturedObject[] _refObjects;
+        //private FracturedObject[] _refObjects;
 
-        private int CurrentRefIndex => (Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1,0, int.MaxValue)) % _refObjects.Length;
+        private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1, 0, int.MaxValue)) % _fracturedObjectsLenght)+1;
 
         private const int MAX_EXPLOSIONS = 5;
 
         private readonly List<GameObject> _explosionsList = new();
+
+        private int _fracturedObjectsLenght;
 
         private const float STATE_OFFSET = 0.5f;
 
@@ -37,17 +41,23 @@ namespace MaximovInk
 
         private void Awake()
         {
-            _refObjects = new FracturedObject[_refParent.childCount];
+            _fracturedObjectsLenght = SceneManager.sceneCountInBuildSettings - 1;
 
-            for (var a = 0; a < _refParent.childCount; a++)
-            {
-                _refObjects[a] = _refParent.GetChild(a).GetComponent<FracturedObject>();
-            }
-
-            OnStateChangedEvent += LevelManager_OnStateChangedEvent;
+             OnStateChangedEvent += LevelManager_OnStateChangedEvent;
 
             PlayerDataManager.Instance.OnLoadEvent += Instance_OnLoadEvent;
             CannonManager.Instance.OnWeaponShootEvent += _ => { _shootCount++; };
+
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        }
+
+        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if (arg0.buildIndex > 0)
+            {
+                _fracturedObject = FindObjectOfType<FracturedObject>();
+                _fracturedObject.OnChunkDetachEvent += _fracturedObject_OnChunkDetachEvent;
+            }
         }
 
         private void Instance_OnLoadEvent(PlayerData obj)
@@ -57,20 +67,27 @@ namespace MaximovInk
 
         }
 
+        private int _loadedScene = 0;
+
+
         private void NextLevelInit()
         {
             DestroyCurrentBuilding();
 
             IsCompleted = false;
 
-            var objRef = _refObjects[CurrentRefIndex];
-            _fracturedObject = Instantiate(objRef);
+            if (_loadedScene != 0)
+            {
+                _fracturedObject.OnChunkDetachEvent -= _fracturedObject_OnChunkDetachEvent;
+                _fracturedObject = null;
+                SceneManager.UnloadSceneAsync(_loadedScene);
+            }
 
-            _fracturedObject.gameObject.SetActive(true);
-            _fracturedObject.transform.SetPositionAndRotation(objRef.transform.position, objRef.transform.rotation);
+            Debug.Log($"_loadedScene {_loadedScene}");
 
-            _fracturedObject.OnChunkDetachEvent += _fracturedObject_OnChunkDetachEvent;
+            _loadedScene = CurrentRefIndex;
 
+            SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
         }
 
         public void NextLevel()
@@ -100,18 +117,11 @@ namespace MaximovInk
 
         private void LevelManager_OnStateChangedEvent(float obj)
         {
-            if (obj < levelCompleteThreshold && !IsCompleted)
+            if (obj < _levelCompleteThreshold && !IsCompleted)
             {
                 IsCompleted = true;
                 OnLevelComplete?.Invoke();
-                /*
-                  this.Invoke(() =>
-                 {
-                     OnNextLevelInit?.Invoke();
-                     NextLevelInit();
-                 }, 2f);
-                 */
-
+                
                 this.Invoke(() =>
                 {
                     UIManager.Instance.RewardScreen.Stars = CalculateStars(_shootCount);
@@ -157,6 +167,8 @@ namespace MaximovInk
 
         private void LateUpdate()
         {
+            if (_fracturedObject == null) return; 
+
             if (IsCompleted) return;
 
             if (_isDirty)
@@ -171,13 +183,10 @@ namespace MaximovInk
                     detached++;
                 }
 
-                //_buildingState = 1f - ((float)detached / total);
-                //_buildingState = Mathf.Clamp01(_buildingState / (STATE_OFFSET+1f));
                 _buildingState = ((float)detached / total);
                 _buildingState *= (1f + STATE_OFFSET);
                 _buildingState = 1f - _buildingState;
 
-            
                 OnStateChangedEvent?.Invoke(_buildingState);
             }
         }

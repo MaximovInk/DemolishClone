@@ -63,7 +63,7 @@ namespace MaximovInk
 
             if ( _initData.CustomExplosionPrefab)
             {
-                var explosionPrefab = Instantiate(_initData.CustomExplosionPrefab);
+                var explosionPrefab = Instantiate(_initData.CustomExplosionPrefab, CannonManager.Instance.transform);
                 explosionPrefab.transform.position = transform.position;
                 Destroy(explosionPrefab, 3f);
             }
