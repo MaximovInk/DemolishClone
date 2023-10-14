@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using GamePush;
+using TMPro;
 
 namespace MaximovInk
 {
@@ -23,6 +24,7 @@ namespace MaximovInk
         [SerializeField] private Image[] _lines;
        // [SerializeField] private GameObject[] _stars;
         [SerializeField] private StarsAnimation _starAnimation;
+        [SerializeField] private TextMeshProUGUI _text;
 
         public int Stars = 0;
 
@@ -52,6 +54,21 @@ namespace MaximovInk
                 _lines[i].gameObject.SetActive(i < stage);
             }
 
+            var message = string.Empty;
+            switch (Stars)
+            {
+                case 1:
+                    message = " <size=130%>Больше</size>\n<size=500%>20</size>\nвыстрелов";
+                    break;
+                case 2:
+                    message = "<size=130%>Меньше</size>\n<size=500%>20</size>\nвыстрелов";
+                    break;
+                case 3:
+                    message = "<size=130%>Меньше</size>\n<size=500%>10</size>\nвыстрелов";
+                    break;
+            }
+
+            _text.text = message;
         }
 
         private int _multipliedStars = 0;

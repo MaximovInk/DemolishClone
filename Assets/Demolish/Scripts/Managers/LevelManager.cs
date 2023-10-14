@@ -18,11 +18,9 @@ namespace MaximovInk
 
         private float _buildingState = 0f;
         private FracturedObject _fracturedObject;
-        private bool _isDirty = false;
+        private bool _isDirty;
 
-        //private FracturedObject[] _refObjects;
-
-        private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1, 0, int.MaxValue)) % _fracturedObjectsLenght)+1;
+        private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1, 0, int.MaxValue)) % _fracturedObjectsLenght) + 1;
 
         private const int MAX_EXPLOSIONS = 5;
 
@@ -32,7 +30,7 @@ namespace MaximovInk
 
         private const float STATE_OFFSET = 0.5f;
 
-        public bool IsCompleted { get; private set; } = false;
+        public bool IsCompleted { get; private set; } 
 
         public void UpdateBuildingState()
         {
@@ -68,7 +66,6 @@ namespace MaximovInk
         }
 
         private int _loadedScene = 0;
-
 
         private void NextLevelInit()
         {
