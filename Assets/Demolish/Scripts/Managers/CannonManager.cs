@@ -4,11 +4,48 @@ using UnityEngine.EventSystems;
 
 namespace MaximovInk
 {
+    
     public class CannonManager : MonoBehaviourSingleton<CannonManager>
     {
+        private class CooldownLogic
+        {
+            private float _delay;
+            private float _timer;
+
+            public CooldownLogic(float cooldown)
+            {
+                _delay = cooldown;
+                _timer = _delay;
+            }
+
+            public bool Click()
+            {
+                if (_timer >= _delay)
+                {
+                    _timer = 0;
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            public void Update(float cooldown)
+            {
+                _delay = cooldown;
+
+                if (_timer > _delay) return;
+
+                _timer += Time.deltaTime;
+            }
+        }
+
+
         [Header("Cannon")]
         [SerializeField] private float _rotationSpeed = 10f;
         [SerializeField] private Vector3 _lookOffset = new(0, 2, 0);
+        [SerializeField] private float _cooldown = 5f;
+
         [Header("Projectile")]
         [SerializeField] private float _projectileForce = 50;
         [SerializeField] private float _hideProjectileDelay = 5f;
@@ -33,6 +70,8 @@ namespace MaximovInk
 
         public LayerMask ExplosionLayerMask => _explosionLayerMask;
 
+        private CooldownLogic _cooldownLogic;
+
         public int CurrentAmmoIndex
         {
             get => _currentAmmoIdx;
@@ -42,6 +81,7 @@ namespace MaximovInk
         private void Awake()
         {
             _camera = Camera.main;
+            _cooldownLogic = new CooldownLogic(_cooldown);
             InitializePool();
             InitializeTrajectory();
         }
@@ -78,10 +118,12 @@ namespace MaximovInk
              
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0) && _cooldownLogic.Click())
             {
                 Shoot();
             }
+
+            _cooldownLogic.Update(_cooldown);
         }
 
         public AmmoData GetAmmoByID(int index)
