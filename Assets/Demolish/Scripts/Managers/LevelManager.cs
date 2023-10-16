@@ -80,8 +80,6 @@ namespace MaximovInk
                 SceneManager.UnloadSceneAsync(_loadedScene);
             }
 
-            Debug.Log($"_loadedScene {_loadedScene}");
-
             _loadedScene = CurrentRefIndex;
 
             SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
