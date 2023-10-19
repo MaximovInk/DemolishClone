@@ -18,6 +18,12 @@ namespace MaximovInk
             PlayerDataManager.Instance.OnSaveEvent += UpdateInfo;
         }
 
+        private void OnEnable()
+        {
+            Instance_OnStateChangedEvent(LevelManager.Instance.BuildingState);
+            UpdateInfo(PlayerDataManager.Instance.GetPlayerData());
+        }
+
         private void Instance_OnStateChangedEvent(float obj)
         {
             if(LevelManager.Instance.IsCompleted)

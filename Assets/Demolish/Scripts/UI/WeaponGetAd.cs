@@ -37,7 +37,6 @@ namespace MaximovInk
                 WeaponSerialization.AddAmmoData(_ammoID, _ammoAmount);
                 WeaponButton.UpdateAllButtons();
             });
-
             
         }
     }

@@ -16,6 +16,7 @@ namespace MaximovInk
         private float _levelCompleteThreshold = 0.1f;
         [SerializeField] private GameObject ExplosivePrefab;
 
+        public float BuildingState => _buildingState;
         private float _buildingState = 0f;
         private FracturedObject _fracturedObject;
         private bool _isDirty;
@@ -83,6 +84,9 @@ namespace MaximovInk
             _loadedScene = CurrentRefIndex;
 
             SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
+
+            _buildingState = 1f;
+            OnStateChangedEvent?.Invoke(_buildingState);
         }
 
         public void NextLevel()

@@ -34,13 +34,6 @@ namespace MaximovInk
         {
             gameObject.SetActive(true);
 
-            /*
-              for (var i = 0; i < _stars.Length; i++)
-             {
-                 _stars[i].SetActive((i + 1) <= Stars);
-             }
-             */
-
             _starAnimation.Show(Stars);
 
             var stage = PlayerDataManager.Instance.GetStage();
@@ -84,6 +77,15 @@ namespace MaximovInk
         public void GetMultiplied()
         {
             _multipliedStars = Stars;
+
+            if (PlayerDataManager.Instance.AdsDisabled)
+            {
+                _multipliedStars *= 3;
+                NextLevel();
+
+                return;
+            }
+
             if (!GP_Ads.IsRewardedAvailable())
             {
                 NextLevel();

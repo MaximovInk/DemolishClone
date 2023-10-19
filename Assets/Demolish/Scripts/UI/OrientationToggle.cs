@@ -9,10 +9,21 @@ namespace MaximovInk
 
         private void Awake()
         {
+            UpdateScreen();
+        }
+
+        private void OnRectTransformDimensionsChange()
+        {
+            UpdateScreen();
+        }
+
+        private void UpdateScreen()
+        {
             var isPortrait = Screen.width < Screen.height;
 
             _landscape.SetActive(!isPortrait);
             _portrait.SetActive(isPortrait);
         }
+
     }
 }
