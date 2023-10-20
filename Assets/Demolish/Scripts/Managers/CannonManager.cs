@@ -113,7 +113,7 @@ namespace MaximovInk
             _target = hit.point;
 
 
-            _trajectoryRenderer.CalculatePath(_source.position, _source.forward * _projectileForce, _target);
+            _trajectoryRenderer.CalculatePath(_source.position, _source.forward * _projectileForce);
             _trajectoryRenderer.Draw();
              
             if (EventSystem.current.IsPointerOverGameObject()) return;
