@@ -13,9 +13,15 @@ namespace MaximovInk
         private void Awake()
         {
             LevelManager.Instance.OnStateChangedEvent += Instance_OnStateChangedEvent;
+            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
 
             PlayerDataManager.Instance.OnLoadEvent += UpdateInfo;
             PlayerDataManager.Instance.OnSaveEvent += UpdateInfo;
+        }
+
+        private void Instance_OnLevelComplete()
+        {
+            Instance_OnStateChangedEvent(0);
         }
 
         private void OnEnable()

@@ -14,28 +14,25 @@ namespace MaximovInk
             _lineRenderer = GetComponent<LineRenderer>();
         }
 
-        public void CalculatePath(Vector3 source, Vector3 force, Vector3 target)
+        public void CalculatePath(Vector3 source, Vector3 force)
         {
             _pointCount = _points.Length;
-            var lastDistance = 0f;
+
+            var layerMask = CannonManager.Instance.ExplosionLayerMask;
+
             for (var i = 0; i < _points.Length; i++)
             {
                 var time = i * 0.1f;
 
                 _points[i] = source + force * time + Physics.gravity * (time * time) / 2f;
-                var distance = Vector3.Distance(_points[i], target);
-                if (i == 0)
-                {
-                    lastDistance = distance;
-                }
 
-                if (_points[i].y < 0 || distance > lastDistance)
+                var hit = Physics.OverlapSphere(_points[i], 0.1f, layerMask);
+                if (hit.Length>0)
                 {
-                    _pointCount = i + 1;
+                    _pointCount = i+1;
                     break;
                 }
 
-                lastDistance = Vector3.Distance(_points[i], target);
             }
         }
 
