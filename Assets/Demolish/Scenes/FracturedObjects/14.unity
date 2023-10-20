@@ -43378,9 +43378,9 @@ MonoBehaviour:
     type: 3}
   GenerateIslands: 1
   GenerateChunkConnectionInfo: 1
-  StartStatic: 0
+  StartStatic: 1
   ChunkConnectionMinArea: 0
-  ChunkConnectionStrength: 0.327
+  ChunkConnectionStrength: 0.479
   ChunkHorizontalRadiusSupportStrength: 100
   SupportChunksAreIndestructible: 0
   ChunkIslandConnectionMaxDistance: 0.2
@@ -43569,7 +43569,7 @@ Transform:
   m_GameObject: {fileID: 1689172360}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.9457661, z: -0, w: 0.32484853}
-  m_LocalPosition: {x: -0.25, y: 0, z: 16.75}
+  m_LocalPosition: {x: -3.2, y: 0, z: 17.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

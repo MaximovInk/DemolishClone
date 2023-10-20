@@ -6128,7 +6128,7 @@ MonoBehaviour:
     type: 3}
   GenerateIslands: 1
   GenerateChunkConnectionInfo: 1
-  StartStatic: 0
+  StartStatic: 1
   ChunkConnectionMinArea: 0
   ChunkConnectionStrength: 0.321
   ChunkHorizontalRadiusSupportStrength: 8.46
@@ -6275,8 +6275,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358793859}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.99579793, z: -0, w: 0.09157814}
-  m_LocalPosition: {x: 0.38, y: 0, z: 17.84}
+  m_LocalRotation: {x: -0, y: -0.9537178, z: -0, w: 0.30070305}
+  m_LocalPosition: {x: -1.09, y: 0, z: 18.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6330,7 +6330,7 @@ Transform:
   - {fileID: 1587389591}
   - {fileID: 1799459257}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -145, z: 0}
 --- !u!43 &390927410
 Mesh:
   m_ObjectHideFlags: 0
