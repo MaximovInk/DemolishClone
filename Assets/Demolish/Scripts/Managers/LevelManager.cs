@@ -119,6 +119,9 @@ namespace MaximovInk
             if (obj < _levelCompleteThreshold && !IsCompleted)
             {
                 IsCompleted = true;
+
+                OnStateChangedEvent?.Invoke(0f);
+
                 OnLevelComplete?.Invoke();
                 
                 this.Invoke(() =>
@@ -126,8 +129,6 @@ namespace MaximovInk
                     UIManager.Instance.RewardScreen.Stars = CalculateStars(_shootCount);
                     UIManager.Instance.RewardScreen.Show();
                 }, 2f);
-
-                OnStateChangedEvent?.Invoke(0f);
             }
         }
 
