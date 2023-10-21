@@ -56,7 +56,6 @@ namespace MaximovInk
         [SerializeField] private TrajectoryRenderer _trajectoryRenderer;
         [SerializeField] private Cannon _currentCannon;
  
-        private Vector3 _target;
         private Transform _source;
         private Camera _camera;
 
@@ -106,12 +105,9 @@ namespace MaximovInk
         {
             var mousePosition = Input.mousePosition;
             var ray = _camera.ScreenPointToRay(mousePosition);
-
-            if (!Physics.Raycast(ray, out var hit, 50)) return;
+            if (!Physics.Raycast(ray, out _, Mathf.Infinity)) return;
 
             _source = _trajectoryRenderer.transform;
-            _target = hit.point;
-
 
             _trajectoryRenderer.CalculatePath(_source.position, _source.forward * _projectileForce);
             _trajectoryRenderer.Draw();

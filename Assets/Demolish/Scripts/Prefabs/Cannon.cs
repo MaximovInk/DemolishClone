@@ -33,7 +33,7 @@ namespace MaximovInk
         private void RotateGun(Vector3 lookAt)
         {
             var originalRot = _gun.rotation;
-            _gun.LookAt(lookAt+ CannonManager.Instance.GetLookCannonOffset(), Vector3.up);
+            _gun.LookAt(lookAt+ _calculatedLookOffset, Vector3.up);
 
             var newRot = _gun.rotation;
             var angles = newRot.eulerAngles;
@@ -43,12 +43,30 @@ namespace MaximovInk
             _gun.rotation = Quaternion.Lerp(originalRot, newRot, 1);
         }
 
+        private Vector3 _calculatedLookOffset;
+
         private void Update()
         {
             var mousePosition = Input.mousePosition;
             var ray = _camera.ScreenPointToRay(mousePosition);
 
+            
+
             if (!Physics.Raycast(ray, out var hit, DISTANCE)) return;
+
+            //Debug.Log(hit.point);
+
+            // var offset = CannonManager.Instance.GetLookCannonOffset();
+            var offset = CannonManager.Instance.GetLookCannonOffset();
+
+             var offset1 = offset;
+             offset1.y = 0f;
+
+            // _calculatedLookOffset = Vector3.Lerp(offset1, offset, Mathf.Abs(hit.point));
+
+            _calculatedLookOffset = offset1;
+
+            _calculatedLookOffset.y = hit.point.y/offset.y;
 
             RotateTower(hit.point);
             RotateGun(hit.point);
