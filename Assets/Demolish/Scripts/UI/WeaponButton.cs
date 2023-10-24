@@ -59,6 +59,7 @@ namespace MaximovInk
             _buttons.Add(this);
 
             CannonManager.Instance.OnWeaponShootEvent += Instance_OnWeaponShootEvent;
+            LevelManager.Instance.OnNextLevelInit += Instance_OnNextLevelInit;
 
             _button.onClick.AddListener(() =>
             {
@@ -69,6 +70,11 @@ namespace MaximovInk
             UpdateUI();
         }
 
+        private void Instance_OnNextLevelInit()
+        {
+            Serialize();
+        }
+
         private void Instance_OnWeaponShootEvent(int ammoIndex)
         {
             if (ammoIndex == 0) return;
@@ -76,10 +82,10 @@ namespace MaximovInk
             if (ammoIndex == _ammoID)
             {
                 _count--;
-                Serialize();
                 UpdateUI();
             }
         }
+
         private void Serialize()
         {
             WeaponSerialization.SetAmmoData(_ammoID, _count);
@@ -88,6 +94,7 @@ namespace MaximovInk
         private void Deserialize()
         {
             _count = WeaponSerialization.GetAmmoData(_ammoID);
+            UpdateUI();
         }
 
         public void Add(int count)
@@ -123,7 +130,6 @@ namespace MaximovInk
 
         public static void Select(int index)
         {
-
             DeselectAll();
             var btn = _buttons.Find(n => n._ammoID == index);
             btn.Select();
