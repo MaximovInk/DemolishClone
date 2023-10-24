@@ -25,5 +25,7 @@ namespace MaximovInk
 
             return 0;
         }
+
+        public AmmoType GetAmmoType(int index) => GetAmmoData(index).NameID;
     }
 }

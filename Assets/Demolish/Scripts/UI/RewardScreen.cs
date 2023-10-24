@@ -10,12 +10,47 @@ namespace MaximovInk
 
         [SerializeField] private Image _rewardPrefab;
 
+        [SerializeField] private GameObject _multiplyButton;
+
         private RewardGenerated[] _currentRewards;
+
+        private Button _backgroundButton;
+
+        private void Awake()
+        {
+            _backgroundButton = GetComponent<Button>();
+            _backgroundButton.onClick.AddListener(() => {
+                if (_multiplyButton.activeSelf) return;
+
+                Get();
+            });
+        }
 
         public void GenerateChestRewards()
         {
-            var rewards = RewardManager.Instance.GenerateChest();
+            _currentRewards = RewardManager.Instance.GenerateChest();
 
+            InitRewards(_currentRewards);
+
+            _multiplyButton.SetActive(true);
+        }
+
+
+        public void GenerateOnce(AmmoType type)
+        {
+            _currentRewards = RewardManager.Instance.GenerateOnce(type);
+
+            InitRewards(_currentRewards);
+
+            _multiplyButton.SetActive(false);
+
+            MKUtils.Invoke(this, () => {
+                Get();
+            }, 2f);
+        }
+
+        private void InitRewards(RewardGenerated[] rewards)
+        {
             MKUtils.DestroyAllChildren(_rewardsParent);
 
             for (int i = 0; i < rewards.Length; i++)
@@ -24,13 +59,11 @@ namespace MaximovInk
 
                 instance.sprite = rewards[i].Icon;
 
-                Debug.Log(instance.name);
                 //Not good for perfomance!:
                 instance.GetComponentInChildren<TextMeshProUGUI>().text = rewards[i].Count.ToString();
             }
-
-            _currentRewards = rewards;
         }
+
 
         public void Get()
         {

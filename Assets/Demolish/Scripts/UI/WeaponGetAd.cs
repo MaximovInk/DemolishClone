@@ -34,8 +34,11 @@ namespace MaximovInk
             {
                 if (idOrTag != REWARD_ID) return;
 
-                WeaponSerialization.AddAmmoData(_ammoID, _ammoAmount);
-                WeaponButton.UpdateAllButtons();
+                //WeaponSerialization.AddAmmoData(_ammoID, _ammoAmount);
+                //WeaponButton.UpdateAllButtons();
+
+                UIManager.Instance.Screens.ShowScreen("Reward");
+                UIManager.Instance.RewardScreen.GenerateOnce(CannonManager.Instance.AmmoDatabase.GetAmmoType(_ammoID));
             });
             
         }

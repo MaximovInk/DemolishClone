@@ -60,7 +60,19 @@ namespace MaximovInk
             }
         }
 
-        private RewardGenerated GenerateOnceReward(ref List<AmmoType> availableTypes)
+        public RewardGenerated[] GenerateOnce(AmmoType type)
+        {
+            RewardGenerated[] rewards = new RewardGenerated[1];
+
+            var rewardInfo = _cachedRewardInfos[type];
+
+            var count = Random.Range(rewardInfo.Count.x, rewardInfo.Count.y);
+
+            rewards[0] = new RewardGenerated { Count = count, Type = type, Icon = rewardInfo.Icon };
+
+            return rewards;
+        }
+        private RewardGenerated GenerateChestOnceReward(ref List<AmmoType> availableTypes)
         {
             if(_cachedRewardInfos.Count != _rewards.Length) {
                 CacheRewardInfos();
@@ -126,7 +138,7 @@ namespace MaximovInk
 
             for (int i = 0; i < count; i++)
             {
-                rewards[i] = GenerateOnceReward(ref typesAvailable);
+                rewards[i] = GenerateChestOnceReward(ref typesAvailable);
             }
 
             return rewards;
