@@ -77,7 +77,6 @@ namespace MaximovInk
 
         private void InstanceOnNextLevelInit()
         {
-
             _playerData.CurrentLevel++;
             _playerData.Stage++;
 
@@ -85,6 +84,7 @@ namespace MaximovInk
             {
                 _playerData.Stage = 0;
             }
+
 
             Save();
         }
