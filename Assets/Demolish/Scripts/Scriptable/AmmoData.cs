@@ -3,11 +3,20 @@ using UnityEngine;
 
 namespace MaximovInk
 {
+    public enum AmmoType
+    {
+        Basic,
+        Bomb,
+        Fire,
+        Missle,
+        Nuclear
+    }
+
     [Serializable]
     public class AmmoData
     {
         [Header("Main")]
-        public string NameID = string.Empty;
+        public AmmoType NameID = AmmoType.Basic;
         public float ForceMultiplier = 1f;
 
         public Vector3 Scale = Vector3.one;

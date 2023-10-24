@@ -1,123 +1,63 @@
-using System;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-using GamePush;
-using TMPro;
-
 namespace MaximovInk
 {
-    [Serializable]
-    public struct StageSetStruct
+    public class RewardScreen : LayoutScreen
     {
-        public Sprite Point;
-    }
+        [SerializeField] private Transform _rewardsParent;
 
-    public class RewardScreen : MonoBehaviour
-    {
-        private const string REWARD_ID = "STARS_MULTIPLY";
+        [SerializeField] private Image _rewardPrefab;
 
-        [SerializeField] private StageSetStruct _completedStruct;
-        [SerializeField] private StageSetStruct _normalStruct;
+        private RewardGenerated[] _currentRewards;
 
-        [SerializeField] private Image[] _points;
-        [SerializeField] private Image[] _lines;
-       // [SerializeField] private GameObject[] _stars;
-        [SerializeField] private StarsAnimation _starAnimation;
-        [SerializeField] private TextMeshProUGUI _text;
-
-        public int Stars = 0;
-
-        public event Action OnRewardEvent;
-
-        public void Show()
+        public void GenerateChestRewards()
         {
-            gameObject.SetActive(true);
+            var rewards = RewardManager.Instance.GenerateChest();
 
-            _starAnimation.Show(Stars);
+            MKUtils.DestroyAllChildren(_rewardsParent);
 
-            var stage = PlayerDataManager.Instance.GetStage();
-
-            for (var i = 0; i < _points.Length; i++)
+            for (int i = 0; i < rewards.Length; i++)
             {
-                _points[i].sprite = i <= stage ? _completedStruct.Point : _normalStruct.Point;
-            }
-            for (var i = 0; i < _lines.Length; i++)
-            {
-                _lines[i].gameObject.SetActive(i < stage);
-            }
+                var instance = Instantiate(_rewardPrefab, _rewardsParent);
 
-            var message = string.Empty;
+                instance.sprite = rewards[i].Icon;
 
-            switch (Stars)
-            {
-                case 1:
-                    message = LocalizationManager.Instance.Get("GREATHER_X_SHOTS", 20);
-                    break;
-                case 2:
-                    message = LocalizationManager.Instance.Get("LESS_X_SHOTS", 20);
-                    break;
-                case 3:
-                    message = LocalizationManager.Instance.Get("LESS_X_SHOTS", 10);
-                    break;
+                Debug.Log(instance.name);
+                //Not good for perfomance!:
+                instance.GetComponentInChildren<TextMeshProUGUI>().text = rewards[i].Count.ToString();
             }
 
-            _text.text = message;
+            _currentRewards = rewards;
         }
 
-        private int _multipliedStars = 0;
-
-        private void NextLevel()
+        public void Get()
         {
-            PlayerDataManager.Instance.AddStars(_multipliedStars);
-            LevelManager.Instance.NextLevel();
-            OnRewardEvent?.Invoke();
-            gameObject.SetActive(false);
+            for (int i = 0; i < _currentRewards.Length; i++)
+            {
+                var reward = _currentRewards[i];
+
+                WeaponSerialization.AddAmmoData(CannonManager.Instance.AmmoDatabase.GetIndex(reward.Type), reward.Count);
+            }
+
+            WeaponButton.UpdateAllButtons();
+
+            Close();
         }
 
         public void GetMultiplied()
         {
-            _multipliedStars = Stars;
-
-            if (PlayerDataManager.Instance.AdsDisabled)
+            for (int i = 0; i < _currentRewards.Length; i++)
             {
-                _multipliedStars *= 3;
-                NextLevel();
-
-                return;
+                var reward = _currentRewards[i];
+                reward.Count *= 3;
+                _currentRewards[i] = reward;
             }
 
-            if (!GP_Ads.IsRewardedAvailable())
-            {
-                NextLevel();
-                return;
-            }
-
-            GP_Ads.ShowRewarded(REWARD_ID, 
-                idOrTag =>
-                {
-                    if (idOrTag != REWARD_ID) return;
-
-                    _multipliedStars *= 3;
-
-                    NextLevel();
-                }, 
-                null, 
-                success =>
-                {
-                    if (success) return;
-
-                    NextLevel();
-                });
-
-
+            Get();
         }
 
-        public void GetNormal()
-        {
-            _multipliedStars = Stars;
-
-            NextLevel();
-        }
     }
+
 }

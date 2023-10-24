@@ -14,5 +14,16 @@ namespace MaximovInk
         }
 
         public int Size => AmmoTypes.Length;
+
+        public int GetIndex(AmmoType type)
+        {
+            for (int i = 0; i < AmmoTypes.Length; i++)
+            {
+                if (AmmoTypes[i].NameID == type)
+                    return i;
+            }
+
+            return 0;
+        }
     }
 }

@@ -73,13 +73,18 @@ namespace MaximovInk
 
         private const int MAX_STAGE = 4;
 
+        public bool IsReward => MAX_STAGE == _playerData.Stage;
+
         private void InstanceOnNextLevelInit()
         {
+
             _playerData.CurrentLevel++;
             _playerData.Stage++;
 
             if (_playerData.Stage > MAX_STAGE)
+            {
                 _playerData.Stage = 0;
+            }
 
             Save();
         }

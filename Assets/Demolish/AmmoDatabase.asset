@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AmmoDatabase
   m_EditorClassIdentifier: 
   AmmoTypes:
-  - NameID: basicAmmo
+  - NameID: 0
     ForceMultiplier: 1
     Scale: {x: 1, y: 1, z: 1}
     Prefab: {fileID: 1089479466394460019, guid: 1a38676f2a58d4b49803190dca9b502b,
@@ -26,7 +26,7 @@ MonoBehaviour:
     CustomExplosionPrefab: {fileID: 165672, guid: e083ed24fc4a7dc46907c043326fd31d,
       type: 3}
     DestroyOnExplode: 0
-  - NameID: fireAmmo
+  - NameID: 2
     ForceMultiplier: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
     Prefab: {fileID: 1089479466394460019, guid: 96f9b1a452e982243bdab38529625448,
@@ -39,7 +39,7 @@ MonoBehaviour:
     CustomExplosionPrefab: {fileID: 8194992990867289339, guid: eda461ed42bfeca4ba26b6ffe833127c,
       type: 3}
     DestroyOnExplode: 0
-  - NameID: bombAmmo
+  - NameID: 1
     ForceMultiplier: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
     Prefab: {fileID: 5712131448385056321, guid: 773ad53a31d1cd440ab9dee317edfa8d,
@@ -52,7 +52,7 @@ MonoBehaviour:
     CustomExplosionPrefab: {fileID: 2398608829508964987, guid: 81776db40558cba42be866e6f9d8ac26,
       type: 3}
     DestroyOnExplode: 1
-  - NameID: rocketAmmo
+  - NameID: 3
     ForceMultiplier: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
     Prefab: {fileID: 903065551824257168, guid: c30cdb897a5b5314cafcc1c62bd0d467, type: 3}
@@ -64,7 +64,7 @@ MonoBehaviour:
     CustomExplosionPrefab: {fileID: 2398608829508964987, guid: 55d3b232707eb1c4aa6b7a705c436fbf,
       type: 3}
     DestroyOnExplode: 1
-  - NameID: nuclearBombAmmo
+  - NameID: 4
     ForceMultiplier: 1
     Scale: {x: 1.1, y: 1.1, z: 1.1}
     Prefab: {fileID: 309080978375559889, guid: 70d68d9abec1a124ea53bf87b3b5b109, type: 3}

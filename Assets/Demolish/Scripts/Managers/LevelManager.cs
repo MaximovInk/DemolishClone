@@ -123,11 +123,11 @@ namespace MaximovInk
                 OnStateChangedEvent?.Invoke(0f);
 
                 OnLevelComplete?.Invoke();
-                
+
                 this.Invoke(() =>
                 {
-                    UIManager.Instance.RewardScreen.Stars = CalculateStars(_shootCount);
-                    UIManager.Instance.RewardScreen.Show();
+                    UIManager.Instance.LevelCompleteScreen.Stars = CalculateStars(_shootCount);
+                    UIManager.Instance.Screens.ShowScreen("LevelComplete");
                 }, 2f);
             }
         }

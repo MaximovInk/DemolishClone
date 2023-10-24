@@ -27,5 +27,13 @@ namespace MaximovInk
             yield return new WaitForFixedUpdate();
             f();
         }
+
+        public static void DestroyAllChildren(Transform target)
+        {
+            for (int i = target.childCount - 1; i >= 0; i--)
+            {
+                UnityEngine.Object.Destroy(target.GetChild(i).gameObject);
+            }
+        }
     }
 }

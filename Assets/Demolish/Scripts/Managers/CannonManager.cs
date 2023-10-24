@@ -59,6 +59,7 @@ namespace MaximovInk
         private Transform _source;
         private Camera _camera;
 
+        public AmmoDatabase AmmoDatabase=>_ammoDatabase;
         public float GetCannonSpeedRotation() => _rotationSpeed;
         public Vector3 GetLookCannonOffset() => _lookOffset;
         public float GetProjectileHideDelay() => _hideProjectileDelay;
