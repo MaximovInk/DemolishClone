@@ -42,6 +42,8 @@ namespace MaximovInk
         [SerializeField] private int _ammoID;
         [SerializeField] private TextMeshProUGUI _textInfo;
         [SerializeField] private Image _iconImage;
+
+
         
         private int _count = 0;
         private Button _button;
@@ -49,10 +51,13 @@ namespace MaximovInk
 
         public static event Action OnClickEvent;
 
+        private WeaponGetAd _ad;
+
         private void Awake()
         {
             _button = GetComponent<Button>();
             _image = GetComponent<Image>();
+            _ad = GetComponentInChildren<WeaponGetAd>();
 
             Deserialize();
 
@@ -63,6 +68,13 @@ namespace MaximovInk
 
             _button.onClick.AddListener(() =>
             {
+                if(_count <= 0)
+                {
+                    _ad.OnClick();
+
+                    return;
+                }
+
                 Select(_ammoID);
                 OnClickEvent?.Invoke();
             });
@@ -162,7 +174,7 @@ namespace MaximovInk
         {
             if (_ammoID == 0) return;
 
-            _button.interactable = _count > 0;
+            _image.color = _count > 0 ? UIManager.Instance.NormalWeaponColor : UIManager.Instance.DisabledWeaponColor;
 
             var ammoText = Mathf.Clamp(_count, 0, 999).ToString(); 
 

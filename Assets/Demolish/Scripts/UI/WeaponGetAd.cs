@@ -26,7 +26,7 @@ namespace MaximovInk
             button.onClick.AddListener(OnClick);
         }
 
-        private void OnClick()
+        public void OnClick()
         {
             if (!GP_Ads.IsRewardedAvailable()) return;
 

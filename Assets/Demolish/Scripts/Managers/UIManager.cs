@@ -14,6 +14,9 @@ namespace MaximovInk
 
         public LayoutScreens Screens { get => _layoutScreens; }
 
+        public Color DisabledWeaponColor = Color.gray;
+        public Color NormalWeaponColor = Color.white;
+
         [SerializeField] private LayoutScreens _layoutScreens;
 
     }
