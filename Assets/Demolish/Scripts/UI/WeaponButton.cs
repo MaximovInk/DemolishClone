@@ -59,16 +59,9 @@ namespace MaximovInk
             _image = GetComponent<Image>();
             _ad = GetComponentInChildren<WeaponGetAd>();
 
-            Deserialize();
-
-            _buttons.Add(this);
-
-            CannonManager.Instance.OnWeaponShootEvent += Instance_OnWeaponShootEvent;
-            LevelManager.Instance.OnNextLevelInit += Instance_OnNextLevelInit;
-
             _button.onClick.AddListener(() =>
             {
-                if(_count <= 0)
+                if (_count <= 0)
                 {
                     _ad.OnClick();
 
@@ -79,8 +72,23 @@ namespace MaximovInk
                 OnClickEvent?.Invoke();
             });
 
+            _buttons.Add(this);
+
+            CannonManager.Instance.OnWeaponShootEvent += Instance_OnWeaponShootEvent;
+            LevelManager.Instance.OnNextLevelInit += Instance_OnNextLevelInit;
+
+            Deserialize();
+
             UpdateUI();
+
+            MKUtils.Invoke(this, () => {
+                if (_isInit) return;
+                _isInit = true;
+                Select(0);
+            }, 0.1f);
         }
+
+        private static bool _isInit = false;
 
         private void Instance_OnNextLevelInit()
         {
