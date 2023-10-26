@@ -79,6 +79,12 @@ namespace MaximovInk
         {
             if (!_isStarted) return;
 
+            if (LevelManager.Instance.IsCompleted)
+            {
+                EndEvent();
+                return;
+            }
+
             _data.CurrentTime += Time.deltaTime;
 
             var t = _data.CurrentTime / _eventDurationSec;
