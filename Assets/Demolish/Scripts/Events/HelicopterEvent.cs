@@ -93,7 +93,7 @@ namespace MaximovInk
 
         public void HelicopterDamaged()
         {
-            PlayerDataManager.Instance.AddStars(Random.Range(_minStars,_maxStars));
+            UIManager.Instance.StarAnimation.SpawnStars(Random.Range(_minStars, _maxStars));
             var explosionInstance = Instantiate(_explosionPrefab);
             explosionInstance.transform.position = _data.Instance.transform.GetChild(0).position;
             Destroy(explosionInstance,10);
