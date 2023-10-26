@@ -126,8 +126,15 @@ namespace MaximovInk
 
                 this.Invoke(() =>
                 {
+                    if (PlayerDataManager.Instance.IsReward)
+                    {
+                        UIManager.Instance.RewardScreen.GenerateChestRewards();
+                        UIManager.Instance.Screens.ShowScreen("Reward");
+                    }
+
                     UIManager.Instance.LevelCompleteScreen.Stars = CalculateStars(_shootCount);
                     UIManager.Instance.Screens.ShowScreen("LevelComplete");
+
                 }, 2f);
             }
         }

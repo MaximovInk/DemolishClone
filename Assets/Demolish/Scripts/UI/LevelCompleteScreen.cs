@@ -66,14 +66,6 @@ namespace MaximovInk
 
             _text.text = message;
 
-            if (isShowed) return;
-
-            if (PlayerDataManager.Instance.IsReward)
-            {
-                UIManager.Instance.RewardScreen.GenerateChestRewards();
-                UIManager.Instance.Screens.ShowScreen("Reward");
-            }
-
         }
 
         private int _multipliedStars = 0;
