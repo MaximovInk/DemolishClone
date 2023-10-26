@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 199019042894108600, guid: dc6f5432dac9b424e9ed6b63748eca40,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199019042894108600, guid: dc6f5432dac9b424e9ed6b63748eca40,
         type: 3}
@@ -200,7 +200,7 @@ PrefabInstance:
     - target: {fileID: 199905921835895052, guid: dc6f5432dac9b424e9ed6b63748eca40,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199905921835895052, guid: dc6f5432dac9b424e9ed6b63748eca40,
         type: 3}
@@ -3794,7 +3794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &585970606
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8100,7 +8100,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.45
+  m_fontSize: 38.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8231,7 +8231,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.47556067}
   m_AnchorMax: {x: 0.5, y: 0.66200006}
   m_AnchoredPosition: {x: -0.0000027418, y: 1.9999809}
-  m_SizeDelta: {x: 10, y: -79.05872}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1328598895
 MonoBehaviour:
@@ -8788,7 +8788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1447599084
 Transform:
   m_ObjectHideFlags: 0
@@ -11772,7 +11772,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 585970610}
         m_TargetAssemblyTypeName: MaximovInk.RewardScreen, Assembly-CSharp
-        m_MethodName: Get
+        m_MethodName: GetMultiplied
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12737,7 +12737,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 62.3
+  m_fontSize: 62.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
