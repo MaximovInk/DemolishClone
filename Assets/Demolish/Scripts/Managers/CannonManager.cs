@@ -44,6 +44,7 @@ namespace MaximovInk
         [Header("Cannon")]
         [SerializeField] private float _rotationSpeed = 10f;
         [SerializeField] private Vector3 _lookOffset = new(0, 2, 0);
+        [SerializeField] private Vector3 _helicopterLookOffset = new Vector3(0, -4, 0);
         [SerializeField] private float _cooldown = 5f;
 
         [Header("Projectile")]
@@ -62,6 +63,7 @@ namespace MaximovInk
         public AmmoDatabase AmmoDatabase=>_ammoDatabase;
         public float GetCannonSpeedRotation() => _rotationSpeed;
         public Vector3 GetLookCannonOffset() => _lookOffset;
+        public Vector3 GetHelicopterLookCannonOffset() => _helicopterLookOffset;
         public float GetProjectileHideDelay() => _hideProjectileDelay;
 
         public event Action<int> OnWeaponShootEvent;
@@ -102,11 +104,18 @@ namespace MaximovInk
             _trajectoryRenderer.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
 
+        public bool IsHelicopterRaycast { get; private set; }
+
         private void Update()
         {
             var mousePosition = Input.mousePosition;
             var ray = _camera.ScreenPointToRay(mousePosition);
-            if (!Physics.Raycast(ray, out _, Mathf.Infinity)) return;
+
+            IsHelicopterRaycast = false;
+
+            if (!Physics.Raycast(ray, out var hit, Mathf.Infinity)) return;
+
+            IsHelicopterRaycast = hit.collider.gameObject.CompareTag("Helicopter");
 
             _source = _trajectoryRenderer.transform;
 

@@ -1,3 +1,4 @@
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 namespace MaximovInk
@@ -45,28 +46,33 @@ namespace MaximovInk
 
         private Vector3 _calculatedLookOffset;
 
+        private void CalculateOffset(Vector3 point)
+        {
+            if (CannonManager.Instance.IsHelicopterRaycast)
+            {
+                Debug.Log("helicopter");
+                _calculatedLookOffset = CannonManager.Instance.GetHelicopterLookCannonOffset();
+            }
+            else
+            {
+                var offset = CannonManager.Instance.GetLookCannonOffset();
+
+                _calculatedLookOffset = offset;
+                _calculatedLookOffset.y = 0f;
+
+                _calculatedLookOffset.y = point.y / offset.y;
+            }
+
+        }
+
         private void Update()
         {
             var mousePosition = Input.mousePosition;
             var ray = _camera.ScreenPointToRay(mousePosition);
 
-            
-
             if (!Physics.Raycast(ray, out var hit, DISTANCE)) return;
 
-            //Debug.Log(hit.point);
-
-            // var offset = CannonManager.Instance.GetLookCannonOffset();
-            var offset = CannonManager.Instance.GetLookCannonOffset();
-
-             var offset1 = offset;
-             offset1.y = 0f;
-
-            // _calculatedLookOffset = Vector3.Lerp(offset1, offset, Mathf.Abs(hit.point));
-
-            _calculatedLookOffset = offset1;
-
-            _calculatedLookOffset.y = hit.point.y/offset.y;
+            CalculateOffset(hit.point);
 
             RotateTower(hit.point);
             RotateGun(hit.point);
