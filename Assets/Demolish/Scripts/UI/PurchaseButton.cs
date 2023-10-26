@@ -7,8 +7,6 @@ namespace MaximovInk
     [RequireComponent(typeof(Button))]
     public class PurchaseButton : MonoBehaviour
     {
-        private string _inappID = "noads_demolish";
-
         private void Awake()
         {
             PlayerDataManager.Instance.OnLoadEvent += Instance_OnLoadEvent;
@@ -25,15 +23,17 @@ namespace MaximovInk
             var button = GetComponent<Button>();
 
             button.onClick.AddListener(OnClick);
+
+            button.interactable = GP_Payments.IsPaymentsAvailable();
         }
 
         private void OnClick()
         {
             if (!GP_Payments.IsPaymentsAvailable()) return;
 
-            GP_Payments.Purchase(_inappID, idOrTag =>
+            GP_Payments.Purchase(UIManager.Instance.NoAdPurchaseID, idOrTag =>
             {
-                if (idOrTag != _inappID) return;
+                if (idOrTag != UIManager.Instance.NoAdPurchaseID) return;
 
                 PlayerDataManager.Instance.DisableAds();
                 gameObject.SetActive(false);

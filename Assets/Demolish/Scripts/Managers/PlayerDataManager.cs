@@ -49,6 +49,7 @@ namespace MaximovInk
 
     public class PlayerDataManager : MonoBehaviourSingletonAuto<PlayerDataManager>
     {
+
         private PlayerData _playerData = new();
 
         public int GetStars() => _playerData.Stars;

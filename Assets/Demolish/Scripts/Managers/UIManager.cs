@@ -16,6 +16,9 @@ namespace MaximovInk
         public StarAddAnimation StarAnimation => _starAddAnimation;
         [SerializeField] private StarAddAnimation _starAddAnimation;
 
+        public string NoAdPurchaseID => _noAdPurchaseID;
+        [SerializeField] private string _noAdPurchaseID = "noads_demolish";
+
         public RectTransform MainCanvas => _mainCanvas;
         [SerializeField] private RectTransform _mainCanvas;
 
