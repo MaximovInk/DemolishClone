@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c2ccc86bf27f5e74a8de536ba7aee649
+guid: 1319f736870b8624dbcb525b5f7d01cc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -82,7 +82,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
-    maxTextureSize: 256
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: 12
     textureCompression: 1
@@ -128,17 +128,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 12
-        height: 183
+        width: 512
+        height: 7808
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 16, z: 0, w: 10}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 317}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04ed459bfc8a3e8468de1dc9269429d7
-      internalID: -1388867741
+      spriteID: 1341cd1290cc34344bf166c787eacb92
+      internalID: 1206732520
       vertices: []
       indices: 
       edges: []
@@ -154,7 +154,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Rectangle 3_0: -1388867741
+      Rectangle 3_0: 1206732520
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
