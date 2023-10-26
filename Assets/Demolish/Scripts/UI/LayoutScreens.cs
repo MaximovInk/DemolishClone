@@ -22,6 +22,11 @@ namespace MaximovInk
             }
         }
 
+        public bool HasActiveScreens()
+        {
+            return _screensStack.Count > 0;
+        }
+
         public void ShowScreen(string name)
         {
             var screen = _screens.FirstOrDefault(x=> x.gameObject.name.ToUpper() == name.ToUpper());

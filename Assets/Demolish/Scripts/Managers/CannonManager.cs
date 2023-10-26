@@ -112,10 +112,10 @@ namespace MaximovInk
 
             _trajectoryRenderer.CalculatePath(_source.position, _source.forward * _projectileForce);
             _trajectoryRenderer.Draw();
-             
+
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            if (Input.GetMouseButtonUp(0) && _cooldownLogic.Click())
+            if (LevelManager.Instance.CanShoot && Input.GetMouseButtonUp(0) && _cooldownLogic.Click())
             {
                 Shoot();
             }
@@ -130,6 +130,8 @@ namespace MaximovInk
 
         private void Shoot()
         {
+            
+
             var currentAmmo = _ammoDatabase.GetAmmoData(_currentAmmoIdx);
             var projectile = ProjectilePool.Instance.GetProjectile(_currentAmmoIdx);
 

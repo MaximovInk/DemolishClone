@@ -31,7 +31,9 @@ namespace MaximovInk
 
         private const float STATE_OFFSET = 0.5f;
 
-        public bool IsCompleted { get; private set; } 
+        public bool IsCompleted { get; private set; }
+
+        public bool CanShoot => !IsCompleted && !LayoutScreens.Instance.HasActiveScreens();
 
         public void UpdateBuildingState()
         {
