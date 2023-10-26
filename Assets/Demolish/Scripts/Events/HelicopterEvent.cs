@@ -32,6 +32,19 @@ namespace MaximovInk
 
         private HeliEventData _data;
 
+        private void Awake()
+        {
+            LevelManager.Instance.OnLevelComplete += Instance_OnLevelComplete;
+        }
+
+        private void Instance_OnLevelComplete()
+        {
+            if (_isStarted)
+            {
+                EndEvent();
+            }
+        }
+
         public void StartEvent()
         {
             if (_isStarted) return;
@@ -74,7 +87,6 @@ namespace MaximovInk
 
             if (_data.CurrentTime > _eventDurationSec)
             {
-               
                 EndEvent();
             }
         }
