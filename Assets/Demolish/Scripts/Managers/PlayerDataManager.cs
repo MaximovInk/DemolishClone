@@ -52,6 +52,8 @@ namespace MaximovInk
 
         private PlayerData _playerData = new();
 
+        public event Action<int> OnLevelIndexAdd;
+
         public int GetStars() => _playerData.Stars;
         public int GetLevel() => _playerData.CurrentLevel;
         public int GetStage() => _playerData.Stage;
@@ -86,8 +88,9 @@ namespace MaximovInk
                 _playerData.Stage = 0;
             }
 
-
-            Save();
+            Save(); 
+            
+            OnLevelIndexAdd?.Invoke(_playerData.CurrentLevel);
         }
 
         private void Save()

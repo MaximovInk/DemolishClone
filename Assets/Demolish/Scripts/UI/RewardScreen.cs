@@ -116,59 +116,15 @@ namespace MaximovInk
 
                     Multiply();
 
-                    if (gameObject.activeSelf)
-                        Get();
+                    Get();
                 },
                 null,
                 success =>
                 {
                     if (success) return;
 
-                    if(gameObject.activeSelf)
-                        Get();
+                    Get();
                 });
-
-
-            Get();
-
-
-
-            /*
-              _multipliedStars = Stars;
-
-            if (PlayerDataManager.Instance.AdsDisabled)
-            {
-                _multipliedStars *= 3;
-                NextLevel();
-
-                return;
-            }
-
-            if (!GP_Ads.IsRewardedAvailable())
-            {
-                NextLevel();
-                return;
-            }
-
-            GP_Ads.ShowRewarded(REWARD_ID, 
-                idOrTag =>
-                {
-                    if (idOrTag != REWARD_ID) return;
-
-                    _multipliedStars *= 3;
-
-                    NextLevel();
-                }, 
-                null, 
-                success =>
-                {
-                    if (success) return;
-
-                    NextLevel();
-                });
-
-             
-             */
         }
 
     }
