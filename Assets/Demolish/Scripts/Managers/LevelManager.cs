@@ -21,7 +21,9 @@ namespace MaximovInk
         private FracturedObject _fracturedObject;
         private bool _isDirty;
 
-        private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1, 0, int.MaxValue)) % _fracturedObjectsLenght) + 1;
+        //private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel() - 1, 0, int.MaxValue)) % _fracturedObjectsLenght) + 1;
+
+        private int CurrentRefIndex => ((Mathf.Clamp(PlayerDataManager.Instance.GetLevel(), 0, int.MaxValue)) % _fracturedObjects.Length);
 
         private const int MAX_EXPLOSIONS = 5;
 
@@ -34,6 +36,8 @@ namespace MaximovInk
         public bool IsCompleted { get; private set; }
 
         public bool CanShoot => !IsCompleted && !LayoutScreens.Instance.HasActiveScreens();
+
+        [SerializeField] private FracturedObject[] _fracturedObjects;
 
         public void UpdateBuildingState()
         {
@@ -80,12 +84,16 @@ namespace MaximovInk
             {
                 _fracturedObject.OnChunkDetachEvent -= _fracturedObject_OnChunkDetachEvent;
                 _fracturedObject = null;
-                SceneManager.UnloadSceneAsync(_loadedScene);
+               // SceneManager.UnloadSceneAsync(_loadedScene);
+
+               Destroy(_fracturedObject);
             }
 
             _loadedScene = CurrentRefIndex;
 
-            SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
+            //SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
+
+            _fracturedObject = Instantiate(_fracturedObjects[_loadedScene]);
 
             _buildingState = 1f;
             OnStateChangedEvent?.Invoke(_buildingState);

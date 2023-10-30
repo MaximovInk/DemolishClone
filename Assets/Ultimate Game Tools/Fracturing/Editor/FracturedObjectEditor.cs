@@ -3,6 +3,8 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using static UnityEngine.GraphicsBuffer;
+using MaximovInk;
+using NUnit.Framework.Internal;
 
 [CustomEditor(typeof(FracturedObject))]
 public class FracturedObjectEditor : Editor
@@ -315,12 +317,103 @@ public class FracturedObjectEditor : Editor
             fracturedComponent.MarkNonSupportedChunks();
         }
     }
-	
+
+    private void CustomMeshInspector(FracturedObject fracturedComponent)
+    {
+        if (GUILayout.Button("Save"))
+        {
+            SaveAsset(fracturedComponent);
+        }
+    }
+
+    private Mesh CloneMesh(Mesh mesh)
+    {
+        return Mesh.Instantiate(mesh);
+    }
+
+    private void SaveMeshFilter(MeshFilter meshFilter, string goName, int index)
+    {
+        var mesh = CloneMesh(meshFilter.sharedMesh);
+
+        AssetDatabase.DeleteAsset($"Assets/Demolish/Meshes/{goName}/savedMesh-{index}.asset");
+
+        meshFilter.sharedMesh = mesh;
+
+        AssetDatabase.CreateAsset(mesh, $"Assets/Demolish/Meshes/{goName}/savedMesh-{index}.asset");
+    }
+
+    private void SavePhysicsMesh(MeshCollider collider, string goName, int index)
+    {
+        var mesh = CloneMesh(collider.sharedMesh);
+
+        AssetDatabase.DeleteAsset($"Assets/Demolish/Meshes/{goName}/Physics/savedMesh-{index}.asset");
+
+        collider.sharedMesh = mesh;
+
+        AssetDatabase.CreateAsset(mesh, $"Assets/Demolish/Meshes/{goName}/Physics/savedMesh-{index}.asset");
+    }
+
+    private void SaveAsset(FracturedObject fracturedComponent)
+    {
+        var meshSaver = (fracturedComponent);
+
+        var meshFilters = meshSaver.GetComponentsInChildren<MeshFilter>(true);
+        var meshColliders = meshSaver.GetComponentsInChildren<MeshCollider>(true);
+
+        var go = fracturedComponent.gameObject;
+
+        Debug.Log($"{go.name} meshes: {meshFilters.Length}");
+
+        if(!AssetDatabase.IsValidFolder($"Assets/Demolish/Meshes/{go.name}"))
+            AssetDatabase.CreateFolder($"Assets/Demolish/Meshes", go.name);
+
+        if (!AssetDatabase.IsValidFolder($"Assets/Demolish/Meshes/{go.name}/Physics"))
+            AssetDatabase.CreateFolder($"Assets/Demolish/Meshes/{go.name}", "Physics");
+
+        if (meshFilters.Length > 0)
+        {
+            for (int i = 0; i < meshFilters.Length; i++)
+            {
+                if (meshFilters[i].sharedMesh == null) continue;
+
+                SaveMeshFilter(meshFilters[i], go.name, i);
+
+            }
+        }
+
+        if (meshColliders.Length > 0)
+        {
+
+            for (int i = 0; i < meshColliders.Length; i++)
+            {
+                if (meshColliders[i].sharedMesh == null) continue;
+
+                SavePhysicsMesh(meshColliders[i], go.name, i);
+
+            }
+        }
+
+        var type = PrefabUtility.GetPrefabAssetType(fracturedComponent.gameObject);
+
+        if (type == PrefabAssetType.Regular)
+        {
+            PrefabUtility.SaveAsPrefabAsset(go, $"Assets/Demolish/Prefabs/Fractured/{go.name}.prefab", out var success);
+            Debug.Log($"saving: {success}");
+        }
+        else
+        {
+            PrefabUtility.SaveAsPrefabAsset(go,$"Assets/Demolish/Prefabs/Fractured/{go.name}.prefab", out var success);
+            Debug.Log($"creating: {success}");
+        }
+
+        AssetDatabase.SaveAssets();
+    }
+
+
+
     public override void OnInspectorGUI()
     {
 
-
-        
         int nIndentationJump = 2;
         Vector4 v4GUIColor = GUI.contentColor;
 
@@ -330,6 +423,8 @@ public class FracturedObjectEditor : Editor
 
         FracturedObject fracturedComponent = serializedObject.targetObject as FracturedObject;
 
+
+        CustomMeshInspector(fracturedComponent);
 
         // Show the custom GUI controls
 
