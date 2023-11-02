@@ -2165,7 +2165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 25}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.42100003, y: 0.565}
-  m_AnchoredPosition: {x: -14.86908, y: -12.807137}
+  m_AnchoredPosition: {x: -14.868774, y: -12.807129}
   m_SizeDelta: {x: -29.745, y: -58.3792}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &317758573
@@ -7409,6 +7409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: '[Fractured]Building_1'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578399962887687206, guid: 5cdad26190abfb04f9e1d8d5ae0cc24f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
