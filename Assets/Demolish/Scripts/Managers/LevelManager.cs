@@ -50,50 +50,31 @@ namespace MaximovInk
 
              OnStateChangedEvent += LevelManager_OnStateChangedEvent;
 
-            PlayerDataManager.Instance.OnLoadEvent += Instance_OnLoadEvent;
             CannonManager.Instance.OnWeaponShootEvent += _ => { _shootCount++; };
 
-            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-        }
-
-        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            if (arg0.buildIndex > 0)
-            {
-                _fracturedObject = FindObjectOfType<FracturedObject>();
-                _fracturedObject.OnChunkDetachEvent += _fracturedObject_OnChunkDetachEvent;
-            }
-        }
-
-        private void Instance_OnLoadEvent(PlayerData obj)
-        {
             
-            NextLevelInit();
-
         }
 
-        private int _loadedScene = 0;
+        public void LoadNewLevel()
+        {
+            NextLevelInit();
+        }
 
         private void NextLevelInit()
         {
+            _shootCount = 0;
             DestroyCurrentBuilding();
 
             IsCompleted = false;
 
-            if (_loadedScene != 0)
+            if (_fracturedObject != null)
             {
                 _fracturedObject.OnChunkDetachEvent -= _fracturedObject_OnChunkDetachEvent;
-                _fracturedObject = null;
-               // SceneManager.UnloadSceneAsync(_loadedScene);
-
-               Destroy(_fracturedObject);
+               Destroy(_fracturedObject.gameObject);
+               _fracturedObject = null;
             }
 
-            _loadedScene = CurrentRefIndex;
-
-            //SceneManager.LoadScene(_loadedScene, LoadSceneMode.Additive);
-
-            _fracturedObject = Instantiate(_fracturedObjects[_loadedScene]);
+            _fracturedObject = Instantiate(_fracturedObjects[CurrentRefIndex]);
 
             _buildingState = 1f;
             OnStateChangedEvent?.Invoke(_buildingState);
@@ -101,9 +82,7 @@ namespace MaximovInk
 
         public void NextLevel()
         {
-            _shootCount = 0;
             OnNextLevelInit?.Invoke();
-            NextLevelInit();
         }
 
         private int _shootCount;

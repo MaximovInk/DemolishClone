@@ -1,12 +1,9 @@
-﻿using System;
-using GamePush;
+﻿using GamePush;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace MaximovInk
 {
-
-    //peocq8lti9h0kwd9bezb1lz41ikbmava
     [RequireComponent(typeof(Button))]
     public class PurchaseButton : MonoBehaviour
     {

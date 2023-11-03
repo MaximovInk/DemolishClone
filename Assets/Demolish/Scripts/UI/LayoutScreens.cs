@@ -15,11 +15,6 @@ namespace MaximovInk
             _screensStack = new Stack<LayoutScreen>();
 
            _screens = GetComponentsInChildren<LayoutScreen>(true);
-
-            for (int i = 0; i < _screens.Length; i++)
-            {
-                Debug.Log($"[Screen{i}] {_screens[i].gameObject.name}");
-            }
         }
 
         public bool HasActiveScreens()

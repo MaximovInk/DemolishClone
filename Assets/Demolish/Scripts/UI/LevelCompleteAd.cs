@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using GamePush;
 
 namespace MaximovInk
@@ -10,9 +11,26 @@ namespace MaximovInk
             PlayerDataManager.Instance.OnLevelIndexAdd += Instance_OnNextLevelInit;
         }
 
+        private void LoadNewLevel()
+        {
+            LevelManager.Instance.LoadNewLevel();
+        }
+
         private void Instance_OnNextLevelInit(int nextLevel)
         {
-            if (PlayerDataManager.Instance.AdsDisabled) return;
+            Debug.Log(nextLevel);
+
+            if (PlayerDataManager.Instance.AdsDisabled)
+            {
+                LoadNewLevel();
+                return;
+            }
+
+            if (nextLevel == 0)
+            {
+                LoadNewLevel();
+                return;
+            }
 
             var levelIndex = nextLevel-2;   //+1 offset for buildsettings +1 nextLevel
 
@@ -22,7 +40,14 @@ namespace MaximovInk
 
             if (isFullscreen && GP_Ads.IsFullscreenAvailable())
             {
-                GP_Ads.ShowFullscreen();
+                GP_Ads.ShowFullscreen(null, b =>
+                {
+                    LoadNewLevel();
+                });
+            }
+            else
+            {
+                LoadNewLevel();
             }
         }
 

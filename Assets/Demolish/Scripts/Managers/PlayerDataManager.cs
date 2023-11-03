@@ -66,6 +66,7 @@ namespace MaximovInk
         
         private void Awake()
         {
+            _playerData.CurrentLevel = -1;
             LevelManager.Instance.OnNextLevelInit += InstanceOnNextLevelInit;
         }
 
@@ -101,7 +102,15 @@ namespace MaximovInk
 
         private void Load()
         {
+            var prevLevel = _playerData.CurrentLevel;
+
             _playerData = SerializationPlayerData.GetData();
+
+            if (prevLevel != _playerData.CurrentLevel)
+            {
+                OnLevelIndexAdd?.Invoke(_playerData.CurrentLevel);
+            }
+
             OnLoadEvent?.Invoke(_playerData);
         }
 
