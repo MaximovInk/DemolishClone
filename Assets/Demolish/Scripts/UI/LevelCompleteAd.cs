@@ -18,7 +18,7 @@ namespace MaximovInk
 
         private void Instance_OnNextLevelInit(int nextLevel)
         {
-            Debug.Log(nextLevel);
+            //Debug.Log(nextLevel);
 
             if (PlayerDataManager.Instance.AdsDisabled)
             {

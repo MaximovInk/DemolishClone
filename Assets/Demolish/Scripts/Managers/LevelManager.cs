@@ -47,12 +47,8 @@ namespace MaximovInk
         private void Awake()
         {
             _fracturedObjectsLenght = SceneManager.sceneCountInBuildSettings - 1;
-
              OnStateChangedEvent += LevelManager_OnStateChangedEvent;
-
             CannonManager.Instance.OnWeaponShootEvent += _ => { _shootCount++; };
-
-            
         }
 
         public void LoadNewLevel()

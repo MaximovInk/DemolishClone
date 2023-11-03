@@ -46,6 +46,9 @@ namespace GamePush
 #else
             if (GP_ConsoleController.Instance.AdsConsoleLogs)
                 Console.Log("FULL SCREEN AD ", "SHOW");
+
+            _onFullscreenStart?.Invoke();
+            _onFullscreenClose?.Invoke(false);
 #endif
         }
 

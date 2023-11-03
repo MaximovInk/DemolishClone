@@ -508,7 +508,7 @@ public class FracturedChunk : MonoBehaviour
                 dieTimer.SecondsToDie = UnityEngine.Random.Range(FracturedObjectSource.EventDetachedMinLifeTime, FracturedObjectSource.EventDetachedMaxLifeTime);
             }
 
-            transform.SetParent(BuildingManager.Instance.transform);
+            transform.SetParent(LevelManager.Instance.transform);
             LevelManager.Instance.UpdateBuildingState();
         }
     }
